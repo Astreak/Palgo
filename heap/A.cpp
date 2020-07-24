@@ -171,30 +171,31 @@ int rotated_sorted(int* a,int n){
     return high;
 }
 
-
+void test_case(){
+    ll n;
+    cin>>n;
+    vector<ll> a(n);
+    for(ll& x:a)
+        cin>>x;
+    sort(a.begin(),a.end());
+    for(int i=0;i<n-2;i++){
+        int M=max(a[i],max(a[i+1],a[i+2]));
+        int m=min(a[i],min(a[i+1],a[i+2]));
+        int y=(a[i]+a[i+1]+a[i+2])-(M+m);
+        if(y+m>=M){
+            cout<<"YES"<<"\n";
+            return;
+        }
+    }
+    cout<<"NO"<<"\n";
+    return;
+}
 
 int main(){
-    int a[]={2,12,34,45,-156,-111,-2};
-    
-    int I=7-rotated_sorted(a,7);
-    vector<int> A;
-    for(int i=6;i>=7-I;i--)
-        A.push_back(a[i]);
-    for(int i=0;i<7-I;i++)
-        A.push_back(a[i]);
-    for(int x:A)
-        cout<<x<<" ";
+    test_case();
+}
    
     
     
-    
-    
-    
-    
-    
-    
-     
-    
-}
              
 
