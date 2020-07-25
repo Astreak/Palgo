@@ -142,44 +142,50 @@ bool G<C>::mother(C a){
 template<class T>
 void flood_fill(vector<vector<T>>& A,T n,T chg){
         int N=A.size();
-        int M=A.at(0).size();
+        int M=A[0].size();
         unordered_map<int ,bool> vis1;
         unordered_map<int,bool> vis2;
         int pos1;
         int pos2;
-        for(int i=0;i<A.size();i++){
-            for(int j:A[i]){
+        for(int i=0;i<N;i++){
+            int flag=0;
+            for(int j=0;j<M;j++){
+                cout<<A[i][j]<<"\n";
                 if(A[i][j]==n){
                     pos1=i;
                     pos2=j;
+                    flag=1;
                     break;
                 }
             }
+            if(flag)
+                break;
         }
+        
         queue<pair<int,int>> Q;
-        pair<int,int> P;
-        P.first=pos1;
-        P.second=pos2;
-        Q.push(P);
+        pair<int,int> u;
+        u.first=pos1;
+        u.second=pos2;
+        Q.push(u);
         vis1[pos1]=true;
         vis2[pos2]=true;
+        cout<<pos1<<" "<<pos2<<"\n";
         while(!Q.empty()){
             auto y=Q.front();
             A[y.first][y.second]=chg;
             Q.pop();
-            int a[]={y.first-1,y.first-1,y.first-1,y.first,y.first,y.first+1,y.first+1,y.first+1};
-            int b[]={y.second-1,y.second,y.second+1,y.second-1,y.second+1,y.second-1,y.second,y.second+1};
+            int a[8]={y.first-1,y.first-1,y.first-1,y.first,y.first,y.first+1,y.first+1,y.first+1};
+            int b[8]={y.second-1,y.second,y.second+1,y.second-1,y.second+1,y.second-1,y.second,y.second+1};
             for(int i=0;i<8;i++){
                 if((a[i]>=0 && a[i]<N) && (b[i]>=0 && b[i]<M)){
                     if(A[a[i]][b[i]]==n){
-                    if(!vis1[a[i]] && !vis2[b[i]]){
                         pair<int,int> u;
                         u.first=a[i];
                         u.second=b[i];
                         Q.push(u);
                         vis1[a[i]]=true;
                         vis2[b[i]]=true;
-                    }
+                    
                 }
             }
         }
@@ -199,8 +205,8 @@ int main(){
     g1.add_edge(3,4);
     g1.add_edge(2,1);
     g1.add_edge(2,34);
-    vector<vector<int>> A={{1,1,1},{2,1,2},{2,2,2}};
-    flood_fill(A,2,3);
+    vector<vector<int>> A={{2,2,2},{2,1,1},{2,2,2}};
+    flood_fill(A,1,3);
     for(int i=0;i<3;i++){
         for(int x:A[i])
             cout<<x<<" ";
