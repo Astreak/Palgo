@@ -13,8 +13,12 @@ TT
 class G{
     public:
     unordered_map<C,vector<C>> adj;
-    int V;// of no use for debuggingf
-   
+    unordered_map<C,vector<pair<C,int>>> wgh;
+    int V;// of no use for debugging lol
+    void add_w(int a,int b,int w){
+        wgh[a].push_back(make_pair(b,w));
+        wgh[b].push_back(make_pair(a,w));
+    }
     void add_edge(C a, C b);
     void bfs(C s);
     void dfs1(C v,unordered_map<C,bool>&visited);
@@ -150,7 +154,7 @@ void flood_fill(vector<vector<T>>& A,T n,T chg){
         for(int i=0;i<N;i++){
             int flag=0;
             for(int j=0;j<M;j++){
-                cout<<A[i][j]<<"\n";
+                //debug :: cout<<A[i][j]<<"\n";
                 if(A[i][j]==n){
                     pos1=i;
                     pos2=j;
@@ -169,7 +173,6 @@ void flood_fill(vector<vector<T>>& A,T n,T chg){
         Q.push(u);
         vis1[pos1]=true;
         vis2[pos2]=true;
-        cout<<pos1<<" "<<pos2<<"\n";
         while(!Q.empty()){
             auto y=Q.front();
             A[y.first][y.second]=chg;
@@ -199,18 +202,41 @@ void flood_fill(vector<vector<T>>& A,T n,T chg){
 
 
 int main(){
-    G<int> g1;
-    g1.add_edge(1,2);
-    g1.add_edge(1,3);
-    g1.add_edge(3,4);
-    g1.add_edge(2,1);
-    g1.add_edge(2,34);
-    vector<vector<int>> A={{2,2,2},{2,1,1},{2,2,2}};
-    flood_fill(A,1,3);
-    for(int i=0;i<3;i++){
-        for(int x:A[i])
-            cout<<x<<" ";
-        cout<<"\n";
+    int t;
+    cin>>t;
+    while(t--){
+        ll n,m,x,y;
+        cin>>n>>m>>x>>y;
+        ll O=n*m;
+        
+            if(y%2==0){
+                if(y/2<=x){
+                    cout<<O*(y/2) <<"\n";
+                }
+                else
+                    cout<<O*x<<"\n";
+            }
+            else{
+                if(y/2+1<=x){
+                    if(O%2==0){
+                        ll one=(O/2)*((y/2)+1) +(O/2)*(y/2);
+                        cout<<one<<"\n";
+                    }
+                    else{
+                        ll d=(O/2);
+                        d*=(y/2);
+                        ll u=((y/2)+1)*((O/2)+1);
+                        cout<<u+d<<"\n";
+                        
+                        
+                    }
+                }
+                else
+                    cout<<O*((y/2)+1)<<"\n";
+                    
+            }
+        
     }
+    
     
 }
