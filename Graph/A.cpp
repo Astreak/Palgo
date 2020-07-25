@@ -13,7 +13,7 @@ TT
 class G{
     public:
     unordered_map<C,vector<C>> adj;
-    int V;
+    int V;// of no use for debuggingf
    
     void add_edge(C a, C b);
     void bfs(C s);
@@ -25,6 +25,7 @@ class G{
    
 };
 TT
+// change directive propertyu
 void G<C>::add_edge(C a,C b){
     adj[a].push_back(b);
     
@@ -137,6 +138,58 @@ bool G<C>::mother(C a){
     return true;
     
 }
+// flood fill
+template<class T>
+void flood_fill(vector<vector<T>>& A,T n,T chg){
+        int N=A.size();
+        int M=A.at(0).size();
+        unordered_map<int ,bool> vis1;
+        unordered_map<int,bool> vis2;
+        int pos1;
+        int pos2;
+        for(int i=0;i<A.size();i++){
+            for(int j:A[i]){
+                if(A[i][j]==n){
+                    pos1=i;
+                    pos2=j;
+                    break;
+                }
+            }
+        }
+        queue<pair<int,int>> Q;
+        pair<int,int> P;
+        P.first=pos1;
+        P.second=pos2;
+        Q.push(P);
+        vis1[pos1]=true;
+        vis2[pos2]=true;
+        while(!Q.empty()){
+            auto y=Q.front();
+            A[y.first][y.second]=chg;
+            Q.pop();
+            int a[]={y.first-1,y.first-1,y.first-1,y.first,y.first,y.first+1,y.first+1,y.first+1};
+            int b[]={y.second-1,y.second,y.second+1,y.second-1,y.second+1,y.second-1,y.second,y.second+1};
+            for(int i=0;i<8;i++){
+                if((a[i]>=0 && a[i]<N) && (b[i]>=0 && b[i]<M)){
+                    if(A[a[i]][b[i]]==n){
+                    if(!vis1[a[i]] && !vis2[b[i]]){
+                        pair<int,int> u;
+                        u.first=a[i];
+                        u.second=b[i];
+                        Q.push(u);
+                        vis1[a[i]]=true;
+                        vis2[b[i]]=true;
+                    }
+                }
+            }
+        }
+            
+    } 
+
+
+}
+
+
 
 
 int main(){
@@ -146,20 +199,12 @@ int main(){
     g1.add_edge(3,4);
     g1.add_edge(2,1);
     g1.add_edge(2,34);
-    vector<int> A;
-    
-    for(auto x:g1.adj){
-        A.push_back(x.first);
-    }
-    int flag=0;
-    for(int x:A){
-        if(g1.mother(x)){
-                cout<<x<<"\n";
-                flag=1;
-                break;
-            }
+    vector<vector<int>> A={{1,1,1},{2,1,2},{2,2,2}};
+    flood_fill(A,2,3);
+    for(int i=0;i<3;i++){
+        for(int x:A[i])
+            cout<<x<<" ";
+        cout<<"\n";
     }
     
-    if(!flag)
-        cout<<"No mother vertex found"<<"\n";
 }
