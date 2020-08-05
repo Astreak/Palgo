@@ -15,7 +15,7 @@ struct Point{
     int x;
     int y;
     
-}
+};
 int sum(vector<int> A,int n,int v){
     if(n==0)
         return -1;
@@ -148,10 +148,127 @@ ll rev(ll n){
     return res;
 }
 
+vector<ll> code(vector<ll>O){
+    vector<ll> L;
+    L.push_back(O[0]);
+    for(int i=1;i<O.size();i++){
+        L.push_back(L[i-1]+O[i]);
+    }
+    return L;
+}
 
+ll CC(int  o){
+    ll u=(1<<(o-1))-1;
+    return u;
+}
 
+void ab(ll& x){
+    x=floor(x/2)+10;
+}
+void an(ll& x){
+    x-=10;
+}
+int code(vector<ll> arr,int a,int b,ll sum) 
+{ 
+    ll n=arr.size();
+    unordered_map<ll, ll> m; 
+  
+     
+    for (int i=0; i<n; i++) 
+        m[arr[i]]++; 
+  
+    int twice_count = 0; 
+  
+     
+    for (int i=0; i<n; i++) 
+    { 
+        
+        twice_count += m[sum-arr[i]]; 
+  
+        
+        if (sum-arr[i] == arr[i]) 
+            twice_count--;
+        
+        else
+            continue; 
+    } 
+  
+    
+    return twice_count/2; 
+} 
+
+ll code2(vector<ll>arr) 
+{   
+    ll n=arr.size();
+    
+    unordered_map<ll, ll> M; 
+  
+    
+    for (int i = 0; i < n - 1; i++){ 
+        vector<ll> s;
+        for (int j = i + 1; j < n; j++){ 
+            if(find(s.begin(),s.end(),arr[i]+arr[j])==s.end()){
+            M[(arr[i] + arr[j])]++;
+            s.push_back(arr[i]+arr[j]);
+            }
+        }
+    } 
+  
+    ll max_count = 0; 
+  
+    
+    for (auto ele : M) 
+        if (max_count < ele.second) 
+            max_count = ele.second; 
+  
+    return max_count; 
+} 
+ 
+ll  cde3(vector<ll> arr){
+   ll n=arr.size();
+   ll sum[20]={0};
+   ll maxC = 0;
+   
+   for (int i = 0; i < n - 1; i++){
+        vector<ll> s;
+      for (int j = i + 1; j < n; j++){
+         ll y=arr[i]+arr[j];
+         if(find(arr.begin(),arr.end(),y)==arr.end()){
+            sum[arr[i]+arr[j]]++;
+            s.push_back(y);
+        }
+        
+            
+      }
+    }
+      for(int i=0;i<20;i++)
+         if(sum[i]>maxC)
+            maxC=sum[i];
+   return maxC;
+} 
 
 int main(){
-    
-    
+    int t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        vector<ll>A(n);
+        for(auto& x:A)
+            cin>>x;
+        unordered_map<ll,ll>M;
+        for(auto x:A)
+            M[x]++;
+        ll c=0;
+        for(auto x:M)
+            c+=(x.second)/2;
+        
+        ll k=cde3(A);
+        if(c!=0)
+            cout<<k<<"\n";
+        else
+            cout<<k<<"\n";
+    }
+        
 }
+

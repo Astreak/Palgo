@@ -199,43 +199,29 @@ void flood_fill(vector<vector<T>>& A,T n,T chg){
 }
 
 
-unsigned int count(int n) 
-{       
-    return (int)log2(n)+1; 
-}
-int func(int  n,int  m){
-    int u=count(m);
-    int p=count(n);
-    int  k=n<<u;
-    k=k+m;
-     
-    int i=m<<p;
-    i=i+n;
-     
-    return abs(k-i);
-}
-
 
  
 
 int main(){
-     int t;
-     cin>>t;
-     while(t--){
-        ll n;
-        cin>>n;
-        vector<int> A(n);
-        for(int& x:A)
-            cin>>x;
-        int c=INT_MIN;
-        for(int i=0;i<n;i++){
-            for(int j=i;j<n;j++){
-                
-                c=max(c,func(A[i],A[j]));
-            }
+     vector<int> A={1,3,4,7,10};
+     int s=13;
+     
+     int pos1;
+     int pos2;
+     int n=A.size();
+     int low=0;
+     int high=n-1;
+     while(low<n && high>=0){
+        if(A[low]+A[high]==s && low!=high){
+            pos1=low;
+            pos2=high;
+            break;
         }
-        cout<<c<<"\n";
+        if(A[low]+A[high]>s)
+            high--;
+        else
+            low++; 
+          
      }
-     
-     
+     cout<<A[pos1]<<" "<<A[pos2]<<"\n";    
 }

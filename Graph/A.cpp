@@ -197,46 +197,134 @@ void flood_fill(vector<vector<T>>& A,T n,T chg){
 
 
 }
+TT
+int connected_components(G<C> g){
+    vector<C> A;
+    for(auto x:g.adj)
+        A.emplace_back(x.first);
+    int c=0;
+    unordered_map<C,bool> M;
+    for(C a:A){
+        if(!M[a]){
+            g.dfs1(a,M);
+            ++c;
+        }
+    }
+    return c;
+}
 
 
 
-
-int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        ll n,m,x,y;
-        cin>>n>>m>>x>>y;
-        ll O=n*m;
+TT
+int path(G<C> g,C s,C d){
+    unordered_map<C,bool> vis(false);
+    int l=0;
+    queue<C> Q;
+    Q.push(s);
+    vis[s]=true;
+    map<int,vector<C>> K;
+    K[0].push_back(s);
+    Q.push(NULL);
+    while(!Q.empty()){
+        C v=Q.front();
+        if(v==d)
+            return l;
+        if(v==NULL){
+            ++l;
+            Q.pop();
+            continue;
+        }
+        Q.pop();
+        for(auto i=g.adj[v].begin();i!=g.adj[v].end();++i){
+            if(!vis[*i]){
+                Q.push(*i);
+                vis[*i]=true;
+            }
+        }
+        Q.push(NULL);
         
-            if(y%2==0){
-                if(y/2<=x){
-                    cout<<O*(y/2) <<"\n";
-                }
-                else
-                    cout<<O*x<<"\n";
+        
+        
+    }
+    return -1;
+    
+    
+}
+
+TT
+int shortest_path(vector<vector<C>>A,C s,C d){
+    int N=A.size();
+    int M=A.at(0).size();
+    unordered_map<C,bool> vis1(false);
+    unordered_map<C,bool>vis2(false);
+    vis1[s]=true;
+    vis2[d]=true;
+    int pos1;
+    int pos2;
+    for(int i=0;i<N;i++){
+        for(int j=0;j<M;j++){
+            if(A[i][j]!=s){
+            pos1=i;
+            pos2=j;
+                
             }
-            else{
-                if(y/2+1<=x){
-                    if(O%2==0){
-                        ll one=(O/2)*((y/2)+1) +(O/2)*(y/2);
-                        cout<<one<<"\n";
-                    }
-                    else{
-                        ll d=(O/2);
-                        d*=(y/2);
-                        ll u=((y/2)+1)*((O/2)+1);
-                        cout<<u+d<<"\n";
-                        
-                        
-                    }
+        }
+    }
+    vis1[pos1]=true;
+    vis2[pos2]=true;
+    queue<pair<int,int>> Q;
+    pair<int,int> u;
+    u.first=pos1;
+    u.second=pos2;
+    Q.push(u);
+    Q.push(NULL);
+    int l=0;
+    
+    while(!Q.empty()){
+        auto y=Q.front();
+        if(y==NULL){
+            ++l;
+            Q.pop();
+            continue;
+        }
+        if(A[y.first][y.second]==d){
+            return l;
+        }
+        int a[8]={y.first-1,y.first-1,y.first-1,y.first,y.first,y.first+1,y.first+1,y.first+1};
+        int b[8]={y.second-1,y.second,y.second+1,y.second-1,y.second+1,y.second-1,y.second,y.second+1};
+        Q.pop();
+        
+        for(int i=0;i<8;++i){
+            if((a[i]>=0 && a[i]<N)&&(b[i]>=0 && b[i]<M)){
+                if(!vis[pos1] || !vis[pos2]){
+                    pair<int,int> u;
+                    u.first=a[i];
+                    u.second=b[i];
+                    Q.push_back(u);
+                    vis1[a[i]]=true;
+                    vis2[b[i]]=true;
                 }
-                else
-                    cout<<O*((y/2)+1)<<"\n";
-                    
             }
+        }
+        Q.push(NULL);
         
     }
     
     
+    return -1;
+    
+    
+}
+
+
+int main(){
+   G<int> g1;
+   g1.add_edge(2,3);
+   g1.add_edge(4,1);
+   g1.add_edge(4,7);
+   g1.add_edge(3,6);
+   g1.add_edge(7,2);
+   vector<vector<int>> A={{1,2,3,4,5},{6,-1,7,8,9},{10,11,-12,90}};
+   cout<<shortest_path(A,1,-1)<<"\n";
+   
 }
