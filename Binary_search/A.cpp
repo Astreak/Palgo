@@ -246,29 +246,62 @@ ll  cde3(vector<ll> arr){
             maxC=sum[i];
    return maxC;
 } 
+ll bs(vector<ll> A,ll k){
+    int low=0;
+    int high=int(A.size())-1;
+    while(low<=high){
+        int mid=low+(high-low)/2;
+        if(A[mid]==k)
+            return mid+1;
+        else if(A[mid]>k)
+            high=mid-1;
+        else
+            low=mid+1;
+            
+    }
+    return -1;
+}
 
 int main(){
     int t;
     cin>>t;
     while(t--){
-        ll n;
-        cin>>n;
-        vector<ll>A(n);
-        for(auto& x:A)
-            cin>>x;
-        unordered_map<ll,ll>M;
-        for(auto x:A)
-            M[x]++;
-        ll c=0;
-        for(auto x:M)
-            c+=(x.second)/2;
+        string s;
+        string m;
+        cin>>s;
+        cin>>m;
+        int n=s.length();
+        string g="";
+        unordered_map<char,ll> M;
+        vector<int> A;
+        for(int i=0;i<n;i++){
+            if(find(A.begin(),A.end(),int(s[i]))==A.end())   // ~n**2
+                 A.push_back(int(s[i]));
+            M[s[i]]++;
+        }
+        sort(A.begin(),A.end());
+        unordered_map<char,ll> MOM;
+        for(int i=0;i<m.length();i++)
+            MOM[s[i]]++;
+        ll u=MOM[m[0]];
+        for(int i=0;i<A.size();i++){
+            if(A[i]!=m[0]){
+                for(int k=0;k<M[char(A[i])];++k)
+                    g+=char(A[i]);
+            }
+            else{
+                ll f=M[char(A[i])]-u+1;
+                for(int j=0;j<u+1;j++)
+                    g+=char(A[i]);
+                for(int j=0;j<m.length();++j){
+                    g+=m[j];
+                    M[m[j]]--;
+                }
+            }
+        }
+        cout<<g<<"\n";
         
-        ll k=cde3(A);
-        if(c!=0)
-            cout<<k<<"\n";
-        else
-            cout<<k<<"\n";
     }
-        
+
 }
 

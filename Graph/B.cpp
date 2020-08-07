@@ -199,29 +199,64 @@ void flood_fill(vector<vector<T>>& A,T n,T chg){
 }
 
 
-
+bool is_sorted(vector<ll> A){
+    for(int i=1;i<A.size();i++){
+        if(A[i-1]>A[i])
+            return false;
+    }
+    return true;
+}
  
 
 int main(){
-     vector<int> A={1,3,4,7,10};
-     int s=13;
-     
-     int pos1;
-     int pos2;
-     int n=A.size();
-     int low=0;
-     int high=n-1;
-     while(low<n && high>=0){
-        if(A[low]+A[high]==s && low!=high){
-            pos1=low;
-            pos2=high;
+   int t;
+   cin>>t;
+   while(t--){
+    ll n;
+    cin>>n;
+    vector<ll> A(n);
+    vector<ll> B(n);
+    for(auto& x:A)
+        cin>>x;
+    for(auto& x:B)
+        cin>>x;
+    if(n==1 && A[0]>B[0]){
+        cout<<"NO"<<"\n";
+        continue;
+    }
+    else if(n==1){
+        cout<<"YES"<<"\n";
+        continue;
+    }
+    vector<ll> L;
+    set<ll> S;
+    int flag=0;
+    for(int i=0;i<n;i++){
+        if(A[i]>B[i]){
+            flag=1;
             break;
         }
-        if(A[low]+A[high]>s)
-            high--;
-        else
-            low++; 
-          
-     }
-     cout<<A[pos1]<<" "<<A[pos2]<<"\n";    
+        else if(A[i]<B[i]){
+            S.insert(B[i]-A[i]);
+            L.push_back(i);
+        }
+        
+    }
+    if(S.size()==0 && flag!=1){
+        cout<<"YES"<<"\n";
+        continue;
+    }
+    else if(S.size()==1){
+        for(int i=1;i<n;i++){
+            if(L[i]-L[i-1]>1){
+                flag=1;
+                break;
+            }
+        }
+    }
+  if(flag)
+    cout<<"NO"<<"\n";
+  else
+    cout<<"YES"<<"\n";
+    }
 }
