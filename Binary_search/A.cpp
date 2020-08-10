@@ -261,47 +261,92 @@ ll bs(vector<ll> A,ll k){
     }
     return -1;
 }
+bool is_palindrom(string s,int low,int high){
+    if(low<high){
+        if(s[low]==s[high])
+            return is_palindrom(s,low+1,high-1);
+        else
+            return false;
+    }
+    return true;
+    
+}
 
-int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        string s;
-        string m;
-        cin>>s;
-        cin>>m;
-        int n=s.length();
-        string g="";
-        unordered_map<char,ll> M;
-        vector<int> A;
-        for(int i=0;i<n;i++){
-            if(find(A.begin(),A.end(),int(s[i]))==A.end())   // ~n**2
-                 A.push_back(int(s[i]));
-            M[s[i]]++;
+void print_pal(vector<vector<string>>& A,vector<string>& C,int low,int high,string s){
+    if(low==high){
+        A.push_back(C);
+        return ;
+    }
+    for(int i=low;i<high;++i){
+        if(is_palindrom(s,low,i)){
+            C.push_back(s.substr(low,i-low+1));
+            print_pal(A,C,i+1,high,s);
+            C.pop_back();
         }
-        sort(A.begin(),A.end());
-        unordered_map<char,ll> MOM;
-        for(int i=0;i<m.length();i++)
-            MOM[s[i]]++;
-        ll u=MOM[m[0]];
-        for(int i=0;i<A.size();i++){
-            if(A[i]!=m[0]){
-                for(int k=0;k<M[char(A[i])];++k)
-                    g+=char(A[i]);
-            }
-            else{
-                ll f=M[char(A[i])]-u+1;
-                for(int j=0;j<u+1;j++)
-                    g+=char(A[i]);
-                for(int j=0;j<m.length();++j){
-                    g+=m[j];
-                    M[m[j]]--;
-                }
-            }
-        }
-        cout<<g<<"\n";
-        
     }
 
+}
+
+void count_consonents(string s,vector<char> A,int& c,int high){
+    if(high){
+        if(find(A.begin(),A.end(),s[high-1])==A.end())
+            ++c;
+        count_consonents(s,A,c,high-1);
+    }
+    
+}
+void insert_at_bottom(stack<int>& S,int x){
+    if(S.size()==0){
+        S.push(x);
+        return ;
+    }
+    int a=S.top();
+    S.pop();
+    insert_at_bottom(S,x);
+    S.push(a);
+}
+
+void reverse_stack(stack<int>& S){
+    if(S.size()==0)
+        return ;
+    int a=S.top();
+    S.pop();
+    reverse_stack(S);
+    insert_at_bottom(S,a);
+    
+}
+
+int count_subs(string s,int low,int& c,int high){
+    if(low<=high){
+        if(s[low]==s[high])
+            ++c;
+        return count_subs(s,low+1,c,high-1)+count_subs(s,low+1,c,high)-count_subs(s,low,c,high-1);
+    }
+    
+}
+bool sum_of_digits(int s,int& c,int n){
+    if(s>=2){
+        if(s!=n  && n%s==0)
+            ++c;
+        return sum_of_digits(s-1,c,n);
+        
+    }
+    if(c==2)
+        return true;
+    else
+        return false;
+        
+    
+}
+
+
+int main(){
+    int n;
+    int s;
+    cin>>s;
+    
+    int c=0;
+    cout<<sum_of_digits(s,c,s)<<"\n";
+    
 }
 
