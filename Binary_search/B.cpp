@@ -261,26 +261,72 @@ ll bs(vector<ll> A,ll k){
     }
     return -1;
 }
-
-int main(){
-    string s;
-    cin>>s;
-    string a;
-    cin>>a;
-    int dp[s.length()+1][a.length()+1];
+ll bin_exp(ll a,ll b){
+    ll res=1;
+    while(b>0){
+        if(b&1)
+            res=res*a;
+        a=a*a;
+        b>>=1;
+    }
+    return res;
+}
+ll factorial(ll a){
+    if(a==0)
+        return 1;
+    else
+        return a*factorial(a-1);
     
-    for(int i=1;i<=s.length();i++){
-        for(int j=1;j<=a.length();j++){
-            if(i==0 || j==0)
-                dp[i][j]=0;
-            else if(s[i]==a[j])
-                dp[i][j]=1+dp[i-1][j-1];
-            else{
-                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
-            }
-            
+}
+
+ll strong_no(ll n,ll& c){
+    if(!n)
+        return c;
+    ll o=n%10;
+    c+=factorial(o);
+    strong_no(n/10,c);
+    
+}
+ll max_ele(vector<ll> A,int low,int high){
+    if(low<high){
+        if(high-low==1){
+            if(A[high]>A[low])
+                return A[high];
+            else
+                return A[low];
+        }
+        else{    
+        int mid=low+(high-low)/2;
+        ll i=max_ele(A,low,mid);
+        ll j=max_ele(A,mid+1,high);
+        return max(i,j);
+    
         }
     }
-    cout<<dp[s.length()][a.length()];
 }
+
+ll min_ele(vector<ll> A ,int low,int high){
+    if(low<high){
+        if(high-low==1){
+            if(A[high]>=A[low])
+                return A[low];
+            else
+                return A[high];
+        }
+        else{
+            int mid=low+(high-low)/2;
+            ll y=min_ele(A,low,mid);
+            ll k=min_ele(A,mid+1,high);
+            return min(y,k);
+        }
+    }
+}
+
+int main(){
+    
+}
+
+
+
+
 

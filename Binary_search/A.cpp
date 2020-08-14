@@ -340,13 +340,40 @@ bool sum_of_digits(int s,int& c,int n){
 }
 
 
+ll bin_exp(ll a, ll b){
+    if(b==0)
+        return 1;
+    ll res=bin_exp(a,b/2);
+    if(b&1)
+        return a*res*res;
+    else
+        return res*res;
+}
+
+
 int main(){
-    int n;
-    int s;
-    cin>>s;
-    
-    int c=0;
-    cout<<sum_of_digits(s,c,s)<<"\n";
-    
+    int t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        vector<ll> A(n);
+        for(auto& x:A)
+            cin>>x;
+
+        for(int i=0;i<n;i++){
+            if(i&1){
+                if(A[i]<=0)
+                    A[i]=-A[i];
+            }
+            else{
+                if(A[i]>=0)
+                    A[i]=-A[i];
+            }
+        }
+        for(auto x:A)
+            cout<<x<<" ";
+        cout<<"\n";
+    }
 }
 
