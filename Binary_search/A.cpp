@@ -352,28 +352,28 @@ ll bin_exp(ll a, ll b){
 
 
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        ll n;
-        cin>>n;
-        vector<ll> A(n);
-        for(auto& x:A)
-            cin>>x;
-
-        for(int i=0;i<n;i++){
-            if(i&1){
-                if(A[i]<=0)
-                    A[i]=-A[i];
-            }
-            else{
-                if(A[i]>=0)
-                    A[i]=-A[i];
-            }
+    int n;
+    cin>>n;
+    vector<int> A(n);
+    for(auto& x:A)
+        cin>>x;
+    int sum;
+    cin>>sum;
+    bool dp[n+1][sum+1];
+    for(int i=0;i<=n;i++)
+        dp[i][0]=true;
+    for(int j=1;j<=sum;j++)
+        dp[0][j]=false;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=sum;j++){
+            if(A[i-1]>j)
+                dp[i][j]=dp[i-1][j];
+            else
+                dp[i][j]=dp[i-1][j] || dp[i-1][j-A[i-1]];
         }
-        for(auto x:A)
-            cout<<x<<" ";
-        cout<<"\n";
     }
+    cout<<dp[n][sum]<<"\n";
+
+    
 }
 

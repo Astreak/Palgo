@@ -323,7 +323,14 @@ ll min_ele(vector<ll> A ,int low,int high){
 }
 
 int main(){
-    
+    int t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        cout<<(n/2)+1<<"\n";
+        
+    }
 }
 
 
