@@ -1,0 +1,9 @@
+import os
+import subprocess
+import sys
+K=os.getcwd()
+for i in range(97,97+26):
+	subprocess.call(f"{chr(i)}.cpp",shell=True)
+
+
+
