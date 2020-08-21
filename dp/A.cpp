@@ -341,13 +341,17 @@ bool sum_of_digits(int s,int& c,int n){
 
 
 ll bin_exp(ll a, ll b){
-    if(b==0)
-        return 1;
-    ll res=bin_exp(a,b/2);
-    if(b&1)
-        return a*res*res;
-    else
-        return res*res;
+    ll res=1;
+    while(b>=1){
+	if(b&1)
+	    res=res*a;
+	
+	a=a*a;
+	b>>=1;
+      
+    }
+    return res;
+    
 }
 
 int edit_distance(string s,string m){
@@ -397,32 +401,44 @@ bool is_palin(ll n){
  
 
 int main(){
-   int t;
-   cin>>t;
-   while(t--){
-       string s;
-       cin>>s;
-       ll n=s.length();
-       ll cnt=0;
-       vector<pair<char,ll>> P;
-       for(int i=0;i<n;i++){
-            if(P.empty() || P.back().first!=s[i])
-               P.push_back(make_pair(s[i],1));
-               
-            else
-                P.back().second++;
-        }
-        vector<int> B;
-        for(auto x:P)
-            if(x.first=='1')
-                B.push_back(x.second);
-        sort(B.rbegin(),B.rend());
-        for(int i=0;i<B.size();i++){
-            if(i%2==0)
-                cnt+=B[i];
+    vector<vector<int>> A= { {1, 3, 1, 5}, 
+        {2, 2, 4, 1}, 
+        {5, 0, 2, 3}, 
+        {0, 6, 1, 2} 
+    }; 
+    int s=2;
+    int dp[4][4];
+    bool dp2[4][4];
+    memset(dp2,false,sizeof(dp));
+    dp[s][0]=A[s][0];
+    dp2[s][0]=true;
+    int c=0;
+    memset(dp,0,sizeof(dp));
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(dp[i][j])
+                continue;
+            else if(j==0 && i!=s)
+                dp[i][j]=0;
                 
+            else if((i==0 && j==0) || (i==3 && j==3))
+                dp[i][j]=A[i][j];
+            else if(i==0 && j!=0)
+                dp[i][j]=max(dp[i][j-1],dp[i+1][j-1])+A[i][j];
+            else if(i==3 && j!=0)
+                dp[i][j]=max(dp[i][j-1],dp[i-1][j-1])+A[i][j];
+            else if(j!=0){
+                dp[i][j]=max(dp[i-1][j-1],max(dp[i][j-1],dp[i+1][j-1]))+A[i][j];
+            }
+            dp2[i][j]=true;
+                
+            
+
+                
+           c=max(c,dp[i][j]);     
         }
-      cout<<cnt<<"\n";
     }
+    cout<<c<<"\n";
+    
 
 }

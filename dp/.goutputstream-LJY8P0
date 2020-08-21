@@ -4,8 +4,6 @@
 #define ll long long 
 #define bits __builtin_clz
 #define tp __builtin_popcount
-#define INF 10e6;
-
 
 using namespace __gnu_pbds; 
 using namespace std;
@@ -343,13 +341,17 @@ bool sum_of_digits(int s,int& c,int n){
 
 
 ll bin_exp(ll a, ll b){
-    if(b==0)
-        return 1;
-    ll res=bin_exp(a,b/2);
-    if(b&1)
-        return a*res*res;
-    else
-        return res*res;
+    ll res=1;
+    while(b>=1){
+	if(b&1)
+	    res=res*a;
+	
+	a=a*a;
+	b>>=1;
+      
+    }
+    return res;
+    
 }
 
 int edit_distance(string s,string m){
@@ -374,11 +376,12 @@ int edit_distance(string s,string m){
 }
 
 bool is_prime(ll n){
-    for(int i=2;i*i<=n;i++){
+    ll c=0;
+    for(int i=1;i<=n;i++){
         if(n%i==0)
-            return false;
-    }
-    return true;    
+            ++c;
+    }  
+    return c==2;     
 }
 
 bool is_palin(ll n){
@@ -394,112 +397,30 @@ bool is_palin(ll n){
     return temp==res;
 }
 
-int factorial(ll n){
-    if(n==1)
-        return 1;
-    else
-        return n*factorial(n-1);
-}
 
-vector<ll> test_case(string s,ll x,ll y,ll a,ll b,unordered_map<char,ll> M){
-
-    ll u=abs(a-x)+abs(b-y);
-    vector<ll> J;
-    
-    
-    bool x_flag=false;
-    bool y_flag=false;
-    if(a>=x){
-        if(a-x<=M['R'])
-            x_flag=true;
-        else
-            x_flag=false;
-    }
-    else{
-        if(x-a<=M['L'])
-            x_flag=true;
-        else
-            x_flag==false;
-    }
-    if(b>=y){
-        if(b-y<=M['U'])
-            y_flag=true;
-        else
-            y_flag=false;
-    }
-    else{
-        if(y-b<=M['D'])
-            y_flag=true;
-        else
-            y_flag==false;
-    }
-    if(x_flag==true && y_flag==true){
-        J.push_back(1);
-        J.push_back(u);
-    }
-    else
-        J.push_back(0);
-    
-    
-
-    
-    
-    
-    return J;
-}
-
-
+ 
 
 int main(){
-    //ios_base::sync_with_stdio(false); 
-    //cin.tie(NULL);
-    ll n,m;
-    scanf("%lld %lld\n",&n,&m);
-    ll A[n][m];
-    for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            scanf("%lld ",&A[i][j]);
-        }
+    vector<int> A={1,3,5};
+    int S=6;
+    int dp[S+1];
+    dp[0]=1;
+    memset(dp,INT_MAX,sizeof(dp));
+    for(int i=1;i<=S;i++){
+	
+	for(auto x:A){
+	    if(i>=x){
+	      
+	      dp[i]=min(dp[i],dp[i-x]+1);
+	      
+	    }
+	  
+	}
     }
-    ll q;
-    scanf("%lld\n",&q);
-    vector<pair<ll,ll>> F;
-    vector<pair<ll,ll>> S;
-    for(int i=0;i<q;i++){
-        ll a,b,c,d;
-        scanf("%lld %lld %lld %lld",&a,&b,&c,&d);
-        a--;
-        b--;
-        c--;
-        d--;
-        F.push_back(make_pair(a,b));
-        S.push_back(make_pair(c,d));
-    }
-    for(int i=0;i<F.size();i++){
-        ll x1=F[i].first;
-        ll y1=F[i].second;
-        ll x2=S[i].first;
-        ll y2=S[i].second;
-        for(ll i=x1;i<=x2;i++){
-            for(ll j=y1;j<=y2;j++){
-                A[i][j]=A[i][j]^1;
-            }
-            
-        }
-        
-    }
-    for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            printf("%lld ",A[i][j]);
-        }
-        printf("\n");
-    }
-       
+
     
+  
+    cout<<dp[S]<<"\n";
+  
 
 }
-
-
-
-
-      
