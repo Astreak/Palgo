@@ -373,6 +373,22 @@ int edit_distance(string s,string m){
     return dp[y][k];
 }
 
+int binary_s(vector<ll> A,ll val){
+    int low=0;
+    int high=A.size();
+    high--;
+    while(low<=high){
+        int mid=low+(high-low)/2;
+        if(A[mid]==mid)
+            return mid;
+        else if(A[mid]>val)
+            high=mid-1;
+        else
+            low=mid+1;
+    }
+    return -1;
+}
+
 bool is_prime(ll n){
     for(int i=2;i*i<=n;i++){
         if(n%i==0)
@@ -451,55 +467,54 @@ vector<ll> test_case(string s,ll x,ll y,ll a,ll b,unordered_map<char,ll> M){
 
 
 int main(){
-    //ios_base::sync_with_stdio(false); 
-    //cin.tie(NULL);
-    ll n,m;
-    scanf("%lld %lld\n",&n,&m);
-    ll A[n][m];
-    for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            scanf("%lld ",&A[i][j]);
+    ios_base::sync_with_stdio(false); 
+    cin.tie(NULL);
+    int t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        vector<ll> A(n);
+        for(auto& x:A)
+            cin>>x;
+        if(n==1){
+            cout<<0<<"\n";
+            continue;
         }
-    }
-    ll q;
-    scanf("%lld\n",&q);
-    vector<pair<ll,ll>> F;
-    vector<pair<ll,ll>> S;
-    for(int i=0;i<q;i++){
-        ll a,b,c,d;
-        scanf("%lld %lld %lld %lld",&a,&b,&c,&d);
-        a--;
-        b--;
-        c--;
-        d--;
-        F.push_back(make_pair(a,b));
-        S.push_back(make_pair(c,d));
-    }
-    for(int i=0;i<F.size();i++){
-        ll x1=F[i].first;
-        ll y1=F[i].second;
-        ll x2=S[i].first;
-        ll y2=S[i].second;
-        for(ll i=x1;i<=x2;i++){
-            for(ll j=y1;j<=y2;j++){
-                A[i][j]=A[i][j]^1;
+        ll c=0;
+        ll i=1;
+        while(A[i]==A[i-1] && i<n)
+            i++;
+        
+     if(A[i-1]<A[i]){
+        i--;
+        vector<pair<ll,ll>> P;
+        for(ll k=i+1;k<n;k++){
+            if(A[k-1]>A[k])
+                P.push_back(make_pair(A[k],A[k-1]));
+        }
+        for(auto x:P)
+            c+=abs(x.first-x.second);
+        cout<<c<<"\n";
+        }
+        else{
+            i--;
+            
+            vector<pair<ll,ll>> temp;
+            for(int k=i+1;k<n;k++){
+               if(A[k-1]<A[k])
+                    temp.push_back(make_pair(A[k],A[k-1]));
             }
             
+            for(auto x:temp)
+                c+=abs(x.first-x.second);
+            cout<<c<<"\n";
         }
-        
-    }
-    for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            printf("%lld ",A[i][j]);
-        }
-        printf("\n");
-    }
-       
-    
+     
+     
+    }  
+
 
 }
-
-
-
 
       
