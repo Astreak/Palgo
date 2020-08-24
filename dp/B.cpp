@@ -513,23 +513,71 @@ vector<ll> prime_factor(ll n){
     return temp;
 }
 
+ll LCM(ll a,ll b){
+    return (a*b)/(__gcd(a,b));
+}
+bool Prime(ll a){
+    
+    if(a<2)
+        return false;
+    if(a>2 && a%2==0)
+        return false;
+    if(a==2)
+        return true;
+    for(int i=3;i*i<=a;i+=2){
+        if(a%i==0)
+            return false;
+    }
+    return true;
+}
 
-int main(){
-   int t;
-   cin>>t;
-   while(t--){
-    ll a,b;
-    cin>>a>>b;
-    int c=0;
-    for(int i=b;i<=a;i+=b){
-        c+=i%10;
+ll good(ll a, ll&c){
+    
+    for(int i=a;i>=1;i/=2){
+        if(i&1)
+            return i;
+        ++c;
     }
-        cout<<c<<"\n";
+}
+
+void sieve(ll a,unordered_map<ll,bool>&M1,unordered_map<ll,bool>&M2){
+    
+    for(int i=2;i*i<=a;i++){
+        if(M1[i]){
+            for(int j=i*i;j<=a;j+=i){
+                if(j*j<=a)
+                    M1[j]=false;
+                else
+                    M2[j]=false;
+            }
+        }
     }
-    
-    
-    
     
 }
+
+int main(){
+    ll a,b;
+    cin>>a>>b;
+    unordered_map<ll,bool> M1(true);
+    unordered_map<ll,bool>M2(true);
+    sieve(b,M1,M2);
+    ll c=0;
+    for(auto x:M1){
+        if(x.second==true && x.first>=a)
+            ++c;
+    }
+    for(auto x:M2)
+        if(x.second==true && x.first<=b)
+            ++c;
+    ll k=(b-a+1)/2;
+    if(c+1>=k)
+        puts("YES");
+    else
+        puts("NO");
+}
+    
+    
+
+
 
       
