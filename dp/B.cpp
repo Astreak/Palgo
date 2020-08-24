@@ -5,7 +5,7 @@
 #define bits __builtin_clz
 #define tp __builtin_popcount
 #define INF 10e6;
-
+#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL); 
 
 using namespace __gnu_pbds; 
 using namespace std;
@@ -342,15 +342,7 @@ bool sum_of_digits(int s,int& c,int n){
 }
 
 
-ll bin_exp(ll a, ll b){
-    if(b==0)
-        return 1;
-    ll res=bin_exp(a,b/2);
-    if(b&1)
-        return a*res*res;
-    else
-        return res*res;
-}
+
 
 int edit_distance(string s,string m){
     int y=s.length();
@@ -463,58 +455,81 @@ vector<ll> test_case(string s,ll x,ll y,ll a,ll b,unordered_map<char,ll> M){
     
     return J;
 }
+void convert_binary(int n){
+    for(int i=31;i>=0;i--){
+        if(n&(1<<i))
+            cout<<1;
+        else
+            cout<<0;
+    }
+    cout<<"\n";
+}
+bool collision(string s){
+    int i=0;
+    int j=s.length()-1;
+    while(i<j){
+        if(s[i]==s[j])
+            return true;
+            
+        i++;
+        j--;    
+    }
+    return false;
+}
+ll bin_exp(ll a,ll b){
+    ll res=1;
+    while(b>=1){
+        if(b&1)
+            res=res*a;
+        a=a*a;
+        b>>=1;
+    }
+    return res;
+}
 
+void ex_gcd(ll a,ll b,ll& x,ll& y){
+    if(b==0){
+        x=1;
+        y=0;
+        return ;    
+    }
+    ll x1,y1;
+    ex_gcd(b,a%b,x1,y1);
+    x=y1;
+    y=x1-(a/b)*y1;
+    return ;
+}
+vector<ll> prime_factor(ll n){
+    vector<ll> temp;
+    for(int i=2;i*i<=n;i++){
+        while(n%i==0){
+            temp.push_back(i);
+            n=n/i;
+            
+        }
+    }
+    if(n>1)
+        temp.push_back(n);
+    return temp;
+}
 
 
 int main(){
-    ios_base::sync_with_stdio(false); 
-    cin.tie(NULL);
-    int t;
-    cin>>t;
-    while(t--){
-        ll n;
-        cin>>n;
-        vector<ll> A(n);
-        for(auto& x:A)
-            cin>>x;
-        if(n==1){
-            cout<<0<<"\n";
-            continue;
-        }
-        ll c=0;
-        ll i=1;
-        while(A[i]==A[i-1] && i<n)
-            i++;
-        
-     if(A[i-1]<A[i]){
-        i--;
-        vector<pair<ll,ll>> P;
-        for(ll k=i+1;k<n;k++){
-            if(A[k-1]>A[k])
-                P.push_back(make_pair(A[k],A[k-1]));
-        }
-        for(auto x:P)
-            c+=abs(x.first-x.second);
+   int t;
+   cin>>t;
+   while(t--){
+    ll a,b;
+    cin>>a>>b;
+    int c=0;
+    for(int i=b;i<=a;i+=b){
+        c+=i%10;
+    }
         cout<<c<<"\n";
-        }
-        else{
-            i--;
-            
-            vector<pair<ll,ll>> temp;
-            for(int k=i+1;k<n;k++){
-               if(A[k-1]<A[k])
-                    temp.push_back(make_pair(A[k],A[k-1]));
-            }
-            
-            for(auto x:temp)
-                c+=abs(x.first-x.second);
-            cout<<c<<"\n";
-        }
-     
-     
-    }  
-
-
+    }
+    
+    
+    
+    
 }
 
       
