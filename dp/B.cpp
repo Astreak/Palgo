@@ -556,24 +556,47 @@ void sieve(ll a,unordered_map<ll,bool>&M1,unordered_map<ll,bool>&M2){
 }
 
 int main(){
-    ll a,b;
-    cin>>a>>b;
-    unordered_map<ll,bool> M1(true);
-    unordered_map<ll,bool>M2(true);
-    sieve(b,M1,M2);
-    ll c=0;
-    for(auto x:M1){
-        if(x.second==true && x.first>=a)
-            ++c;
+    int t;
+    cin>>t;
+    while(t--){
+        ll p,f,c1,c2,s,w;
+        cin>>p>>f;
+        cin>>c1>>c2;
+        cin>>s>>w;
+        ll k=p+f;
+        vector<ll> P;
+        vector<ll> M;
+        for(int i=1;i<=max(c1,c2);i++){
+            if(i*s<=k)
+                P.push_back(i);
+            
+        }
+        for(int j=1;j<=max(c1,c2);j++){
+            if(w*j<=k)
+                M.push_back(j);
+        }
+        
+        ll cnt=0;
+        if(P.size()==0){
+            
+            cout<<*max_element(M.begin(),M.end())<<"\n";
+        }
+        else if(M.size()==0)
+            cout<<*max_element(P.begin(),P.end())<<"\n";
+        else{
+            for(int i=0;i<P.size();i++){
+                for(int j=0;j<M.size();j++){
+                    if(P[i]*s+M[j]*w<=k)
+                        cnt=max(cnt,P[i]+M[j]);
+                    else if(P[i]*s<=k)
+                        cnt=max(cnt,P[i]);
+                    else if(M[j]*w<=k)
+                        cnt=max(cnt,M[j]);
+                }
+            }
+        }
+        cout<<cnt<<"\n";
     }
-    for(auto x:M2)
-        if(x.second==true && x.first<=b)
-            ++c;
-    ll k=(b-a+1)/2;
-    if(c+1>=k)
-        puts("YES");
-    else
-        puts("NO");
 }
     
     

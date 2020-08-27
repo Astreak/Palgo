@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include<cmath>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp> 
 #define ll long long 
@@ -11,6 +12,31 @@ using namespace std;
 typedef tree<int, null_type, less<int>, rb_tree_tag, 
              tree_order_statistics_node_update> G; 
              
+
+
+class TestC{
+    private:
+        ll t;
+    public:
+        TestC(ll a){
+            this->t=a;    
+        }
+        void dec(){
+            --(this->t);
+        }
+        ll get_t(){
+            return this->t;
+        }
+};
+
+
+
+
+
+
+
+
+
 
 struct Point{
     int x;
@@ -341,14 +367,20 @@ bool sum_of_digits(int s,int& c,int n){
 }
 
 
-ll bin_exp(ll a, ll b){
+ll bin_exp(ll a, ll b,ll &h){
     if(b==0)
         return 1;
-    ll res=bin_exp(a,b/2);
-    if(b&1)
-        return a*res*res;
-    else
-        return res*res;
+    ll res=bin_exp(a,b/2,h);
+    if(b&1){
+        ll k=(a*res*res)/10;
+        h=k%10;
+        return (a*res*res)%10;
+    }
+    else{
+        ll k=(res*res)/10;
+        h=k%10;
+        return (res*res)%10;
+    }
 }
 
 int edit_distance(string s,string m){
@@ -373,17 +405,17 @@ int edit_distance(string s,string m){
 }
 
 bool is_prime(ll n){
-    ll c=0;
-    for(int i=1;i<=n;i++){
-        if(n%i==0)
-            ++c;
-    }  
-    return c==2;     
+    for(int i=2;i*i<=n;i++){
+        if(n&i)
+            return false;
+    }
+    return true;
 }
 
 bool is_palin(ll n){
     int r=0;
     ll res=0;
+    
     ll temp=n;
     while(n){
         r=n%10;
@@ -395,8 +427,74 @@ bool is_palin(ll n){
 }
 
 
+
+template<class T1,class T2> 
+void S(T1& x,T2& y){
+    x^=y;
+    y^=x;
+}
+
+
+int hamming(int a,int b){
+    return __builtin_popcount(a^b);
+}
  
+ll fact(ll a){
+    ll ans=1;
+    for(int i=2;i<=a;i++)
+        ans=ans*i;
+    return ans;
+}
+ll extended(ll a,ll b,ll& x,ll& y){
+    if(b==0){
+        x=1;
+        y=0;
+        return a;
+    }
+    ll x1,y1;
+    ll d=extended(b,a%b,x1,y1);
+    x=y1;
+    y=x1-(a/b)*y1;
+    return d;
+}
+
+
+ll fer_little(ll a,ll b,ll m){
+    if(b==0)
+        return 1;
+    ll k=fer_little(a,b/2,m)%m;
+    if(b&1)
+        return (k*k*a)%m;
+    else
+        return (k*k)%m;
+}
+ll fibon(ll n){
+    ll dp[n+1];
+    dp[1]=0;
+    dp[2]=1;
+    for(int i=3;i<=n;i++){
+        dp[i]=dp[i-1]+dp[i-2];
+    }
+    return dp[n];
+}
+bool prime_divisor(ll n){
+    set<ll> S;
+    for(int i=2;i*i<=n;i++){
+        while(n%i==0){
+            S.insert(i);
+            n/=i;
+            
+        }        
+    }
+    if(n>1)
+        S.insert(n);
+    return S.size()==2;
+
+}
+
+
 
 int main(){
-   
+    
+    
 }
