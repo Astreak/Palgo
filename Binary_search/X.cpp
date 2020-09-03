@@ -46,32 +46,38 @@ ll test_case(ll n,vector<ll> A){
 
 
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        ll n;
-        cin>>n;
-        vector<ll> A(n);
-        for(auto& x:A)
-            cin>>x;
-        ll dp[n];
-        memset(dp,0,sizeof(dp));
-        dp[0]=0;
-        for(int i=1;i<n;i++){
-            if(A[i-1]==1 && A[i]==0)
-                dp[i]=dp[i-1]+1;
-            else
-                dp[i]=dp[i-1];
+    ll n;
+    cin>>n;
+    vector<pair<ll,ll>>P;
+    priority_queue<ll> Q;
+    ll sum=0;
+    ll m=INT_MIN;
+    while(n--){
+        ll a,b;
+        cin>>a>>b;
+        P.push_back(make_pair(a,b));
+        sum+=a;
         
+        Q.push(b);
+    }
+    
+
+    vector<ll> ans;
+    for(int j=0;j<P.size();j++){
+        ll o=sum-P[j].first;
+        if(Q.top()==P[j].second){
+            ll temp=Q.top();
+            Q.pop();
+            ans.push_back(Q.top()*o);
+            Q.push(temp);
         }
-    
-        if(dp[n-2]&1)
-            puts("Second");
         else
-            puts("First");      
-    
+            ans.push_back(Q.top()*o);
         
     }
+    for(auto x:ans)
+        cout<<x<<" ";
+    cout<<"\n";
 }
 
 
