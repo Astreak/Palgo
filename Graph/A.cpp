@@ -215,116 +215,63 @@ int connected_components(G<C> g){
 
 
 
-TT
-int path(G<C> g,C s,C d){
-    unordered_map<C,bool> vis(false);
-    int l=0;
-    queue<C> Q;
-    Q.push(s);
-    vis[s]=true;
-    map<int,vector<C>> K;
-    K[0].push_back(s);
-    Q.push(NULL);
-    while(!Q.empty()){
-        C v=Q.front();
-        if(v==d)
-            return l;
-        if(v==NULL){
-            ++l;
-            Q.pop();
-            continue;
-        }
-        Q.pop();
-        for(auto i=g.adj[v].begin();i!=g.adj[v].end();++i){
-            if(!vis[*i]){
-                Q.push(*i);
-                vis[*i]=true;
-            }
-        }
-        Q.push(NULL);
-        
-        
-        
-    }
-    return -1;
-    
-    
-}
 
-TT
-int shortest_path(vector<vector<C>>A,C s,C d){
-    int N=A.size();
-    int M=A.at(0).size();
-    unordered_map<C,bool> vis1(false);
-    unordered_map<C,bool>vis2(false);
-    vis1[s]=true;
-    vis2[d]=true;
-    int pos1;
-    int pos2;
-    for(int i=0;i<N;i++){
-        for(int j=0;j<M;j++){
-            if(A[i][j]!=s){
-            pos1=i;
-            pos2=j;
-                
-            }
-        }
-    }
-    vis1[pos1]=true;
-    vis2[pos2]=true;
-    queue<pair<int,int>> Q;
-    pair<int,int> u;
-    u.first=pos1;
-    u.second=pos2;
-    Q.push(u);
-    Q.push(NULL);
-    int l=0;
-    
-    while(!Q.empty()){
-        auto y=Q.front();
-        if(y==NULL){
-            ++l;
-            Q.pop();
-            continue;
-        }
-        if(A[y.first][y.second]==d){
-            return l;
-        }
-        int a[8]={y.first-1,y.first-1,y.first-1,y.first,y.first,y.first+1,y.first+1,y.first+1};
-        int b[8]={y.second-1,y.second,y.second+1,y.second-1,y.second+1,y.second-1,y.second,y.second+1};
-        Q.pop();
-        
-        for(int i=0;i<8;++i){
-            if((a[i]>=0 && a[i]<N)&&(b[i]>=0 && b[i]<M)){
-                if(!vis[pos1] || !vis[pos2]){
-                    pair<int,int> u;
-                    u.first=a[i];
-                    u.second=b[i];
-                    Q.push_back(u);
-                    vis1[a[i]]=true;
-                    vis2[b[i]]=true;
-                }
-            }
-        }
-        Q.push(NULL);
-        
-    }
-    
-    
-    return -1;
-    
-    
-}
 
 
 int main(){
-   G<int> g1;
-   g1.add_edge(2,3);
-   g1.add_edge(4,1);
-   g1.add_edge(4,7);
-   g1.add_edge(3,6);
-   g1.add_edge(7,2);
-   vector<vector<int>> A={{1,2,3,4,5},{6,-1,7,8,9},{10,11,-12,90}};
-   cout<<shortest_path(A,1,-1)<<"\n";
+   int t;
+   cin>>t;
+   while(t--){
+        ll n,m;
+        cin>>n>>m;
+        vector<ll> A(n);
+        for(auto& x:A)
+            cin>>x;
+        map<ll,vector<ll>>M;
+        for(int j=0;j<n;j++){
+            for(int i=0;i<m;i++){
+                ll o;
+                cin>>o;
+                M[j].push_back(A[j]+o);
+                A[j]=A[j]+o;
+            }
+        }
+        map<ll,ll> H;
+        map<ll,ll> R;
+        
+        for(auto x:M){
+            ll c=INT_MIN;
+            ll index=-1;
+            for(int i=0;i<x.second.size();i++){
+                if(c<x.second[i]){
+                    c=x.second[i];
+                    index=i;
+                }
+                
+            }
+            H[x.first]=index;
+        }
+        ll cnt=0;
+        for(auto x:M){
+            bool flag=true;
+            for(int i=0;i<m;i++){
+                for(auto n:M){
+                    if(n.first!=x.first){
+                        if(n.second[i]>x.second[i]){
+                            flag=false;
+                            break;
+                        }
+                    }
+                }
+                if(!flag)
+                    break;
+            }
+            R[x.first]=flag;
+        }
+        for(auto x:R)
+            cout<<x.first<<" "<<x.second<<"\n";
+        cout<<"\n";
+
+    }
    
 }
