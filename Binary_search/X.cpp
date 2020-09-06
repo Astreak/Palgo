@@ -46,38 +46,21 @@ ll test_case(ll n,vector<ll> A){
 
 
 int main(){
-    ll n;
-    cin>>n;
-    vector<pair<ll,ll>>P;
-    priority_queue<ll> Q;
-    ll sum=0;
-    ll m=INT_MIN;
-    while(n--){
-        ll a,b;
-        cin>>a>>b;
-        P.push_back(make_pair(a,b));
-        sum+=a;
-        
-        Q.push(b);
+    string s="Abababba";
+    string r=s;
+    reverse(r.begin(),r.end());
+    ll dp[s.length()+1][r.length()+1];
+    for(int i=0;i<=s.length();i++){
+        for(int j=0;j<=s.length();++j){
+            if(i==0 || j==0)
+                dp[i][j]=0;
+            else if(s[i-1]==r[j-1])
+                dp[i][j]=dp[i-1][j-1]+1;
+            else
+                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+            }
     }
-    
-
-    vector<ll> ans;
-    for(int j=0;j<P.size();j++){
-        ll o=sum-P[j].first;
-        if(Q.top()==P[j].second){
-            ll temp=Q.top();
-            Q.pop();
-            ans.push_back(Q.top()*o);
-            Q.push(temp);
-        }
-        else
-            ans.push_back(Q.top()*o);
-        
-    }
-    for(auto x:ans)
-        cout<<x<<" ";
-    cout<<"\n";
+    cout<<dp[s.length()][s.length()]<<"\n";
 }
 
 
