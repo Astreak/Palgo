@@ -44,9 +44,7 @@ ll helper(ll n){
 }
 
 int main(){
-    vector<int> A={12,34,46,46,58,34};
-    A.erase(unique(A.begin(),A.end()));
-    for(auto x:A)
-        cin>>x;
+   
+      
     
 }

@@ -46,21 +46,79 @@ ll test_case(ll n,vector<ll> A){
 
 
 int main(){
-    string s="Abababba";
-    string r=s;
-    reverse(r.begin(),r.end());
-    ll dp[s.length()+1][r.length()+1];
-    for(int i=0;i<=s.length();i++){
-        for(int j=0;j<=s.length();++j){
-            if(i==0 || j==0)
-                dp[i][j]=0;
-            else if(s[i-1]==r[j-1])
-                dp[i][j]=dp[i-1][j-1]+1;
-            else
-                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+    int t;
+    cin>>t;
+    while(t--){
+        ll n,x,y;
+        cin>>n>>x>>y;
+        ll k=(y-x);
+        if(n==2){
+            cout<<x<<" "<<y<<"\n";
+            continue;
+            
+        }
+        if(k+1==n){
+            for(int i=x;i<=y;i++)
+                cout<<i<<" ";
+            cout<<"\n";
+        }
+        else{
+            if(k+1<n){
+                ll diff=n-k-1;
+                ll cnt=0;
+                ll start=x;
+                ll end=y;
+                for(int i=x-1;i>=1 && cnt<diff;i--){
+                    start=i;
+                    cnt++;
+                }
+                if(cnt!=diff){
+                    ll f=(diff-cnt);
+                    end+=(diff-cnt);
+                }
+                for(int i=start;i<=end;i++)
+                    cout<<i<<" ";
+                cout<<"\n";
+                
             }
+            else{
+                ll jump=1;
+                for(int i=1;i<=k;i++){
+                    if(k%i==0){
+                        if((k/i)+1<=n){
+                            jump=i;
+                            break;
+                        }
+                    }
+                }
+                ll adv=(k/jump)+1;
+                if(adv==n){
+                    
+                    for(int i=x;i<=y;i+=jump)
+                        cout<<i<<" ";
+                }
+                else{
+                    ll diff=n-adv;
+                    
+                    ll start=x;
+                    ll end=y;
+                    ll cnt=0;
+                    for(int i=x;i>=1 && cnt<diff;i-=jump){
+                        start=i;
+                        if(i!=x)
+                            ++cnt;
+                    }
+                    if(diff!=cnt){
+                        end+=(diff-cnt)*jump;
+                    }
+                    for(int i=start;i<=end;i+=jump){
+                        cout<<i<<" ";
+                    }
+                }
+                cout<<"\n";
+            }
+        }
     }
-    cout<<dp[s.length()][s.length()]<<"\n";
 }
 
 
