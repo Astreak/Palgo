@@ -10,11 +10,13 @@ class Fenwick{
         this->n=a;
     }
     vector<T> A;
+
     void copy_array(vector<T> F){
-        for(auto x:F)
-            A.push_back(x);
-        for(int i=0;i<A.size();i++){
-            update(n,i,A[i]);
+        for(int i=0;i<=n;i++){
+           A.push_back(0);
+        }   
+        for(int i=0;i<F.size();i++){
+            update(n,i,F[i]);
         }
     }
     void update(int n,int i,T val);
@@ -39,18 +41,48 @@ int Fenwick<T>::sum(int i){
     }
 }
 
+bool reverse_sort(vector<ll> A,int start,int end){
+    for(int i=start+1;i<=end;i++){
+        if(A[i-1]<A[i])
+            return false;
+    }
+    return true;
+}
 
 int main(){
-    vector<int> A={12, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-    int n=A.size();
-    Fenwick<int> BIT(n);
-    BIT.copy_array(A);
-    for(int i=0;i<BIT.A.size();i++){
-        cout<<BIT.A[i]<<"\n";
-    }
-    cout<<"sum is comming "<<"\n";
-    cout<<BIT.sum(2)<<"\n";
-    
+    int t;
+    cin>>t;
+    while(t--){
+            ll n;
+            cin>>n;
+            vector<ll> A(n);
+            vector<ll> B(n);
+            for(auto& x:A)
+                cin>>x;
+            for(auto& x:B)
+                cin>>x;
+            vector<ll> temp;
+            vector<ll> F;
+            for(int i=0;i<n;i++){
+                if(!B[i]){
+                    temp.emplace_back(A[i]);
+                }
+            
+            }
+            sort(temp.begin(),temp.end());
+            for(int i=0;i<n;i++){
+                if(!B[i]){
+                    F.push_back(temp.back());
+                    temp.pop_back();
+                }
+                else
+                    F.push_back(A[i]);
+                
+            }
+            for(auto x:F)
+                cout<<x<<" ";
+            cout<<"\n";
+        }
 }
 
 
