@@ -50,39 +50,30 @@ bool reverse_sort(vector<ll> A,int start,int end){
 }
 
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-            ll n;
-            cin>>n;
-            vector<ll> A(n);
-            vector<ll> B(n);
-            for(auto& x:A)
-                cin>>x;
-            for(auto& x:B)
-                cin>>x;
-            vector<ll> temp;
-            vector<ll> F;
-            for(int i=0;i<n;i++){
-                if(!B[i]){
-                    temp.emplace_back(A[i]);
-                }
-            
+   int t;
+   cin>>t;
+   while(t--){
+        double n;
+        cin>>n;
+        double ans1=-1;
+        for(double i=0;i<=n;i++){
+            double o=i/n;
+            if(i+o==i){
+                ans1=i;
+                break;
             }
-            sort(temp.begin(),temp.end());
-            for(int i=0;i<n;i++){
-                if(!B[i]){
-                    F.push_back(temp.back());
-                    temp.pop_back();
-                }
-                else
-                    F.push_back(A[i]);
-                
-            }
-            for(auto x:F)
-                cout<<x<<" ";
-            cout<<"\n";
         }
+        if(ans1<0){
+            puts("N");
+            continue;
+        }
+        else{
+            cout<<"Y"<<" ";
+            cout<<ans1<<" "<<abs(n-ans1)<<"\n";
+        }
+        
+            
+   }
 }
 
 

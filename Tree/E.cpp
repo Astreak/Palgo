@@ -41,47 +41,100 @@ int Fenwick<T>::sum(int i){
 
 bool reverse_sort(vector<ll> A,int start,int end){
     for(int i=start+1;i<=end;i++){
-        if(A[i-1]<A[i])
+        if(A[i-1]>A[i])
             return false;
     }
     return true;
 }
 
+ll bin_exp(ll a,ll b){
+    ll res=1;
+    while(b>=1){
+        if(b&1)
+            res=res*a;
+        a=a*a;
+        b>>=1;
+    }
+    return res;
+}
+ll prog(ll a){
+    return a*(a+1);
+}
+
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        ll n;
-        cin>>n;
-        vector<vector<char>> dp;
+   int t;
+   cin>>t;
+   while(t--){
+        ll n,m;
+        cin>>n>>m;
+        string s;
+        cin>>s;
+        vector<pair<char,ll>> P;
         for(int i=0;i<n;i++){
-            vector<char> row;
-            for(int j=0;j<n;j++){
-                char temp;
-                cin>>temp;
-                row.push_back(temp);
+            if(P.empty() || P.back().first!=s[i]){
+                P.push_back(make_pair(s[i],1));
             }
-            dp.push_back(row);    
+            else
+                P.back().second++;
         }
-        bool flag=true;
-        for(int i=0;i<n-1;i++){
-            for(int j=0;j<n-1;j++){
-                if(dp[i][j]=='1'){
-                    if(dp[i][j+1]!='1' &&  dp[i+1][j]!='1'){
-                        flag=false;
-                        break;
-                    }
-                }
+        ll cut=0;
+        ll leading=0;
+        bool flag=false;
+        vector<ll> O;
+        for(int i=0;i<P.size();i++){
+            if(P[i].first=='1'){
+                flag=true;
+                ++cut;
+            }
+            else if(P[i].first=='0')
+                O.push_back(P[i].second);
+            if(!flag)
+                ++leading;
+        }
+        reverse(P.begin(),P.end());
+        flag=false;
+        ll trail=0;
+        for(int i=0;i<P.size();i++){
+            if(P[i].first=='1'){
+                flag=true;
+                break;
             }
             if(!flag)
-                break;
+                ++trail;
+                
+            
         }
-        if(flag)
-            puts("YES");
-        else
-            puts("NO");
-    }
-               
+        sort(O.begin(),O.end());
+        ll ans;
+        if(cut<=m){
+            if(cut<m){
+                ll diff=leading+trail+cut;
+                if(m-cut>=2)
+                    ans=0;
+                else
+                    ans=min(leading,trail);
+            }
+            else
+                ans=leading+trail;
+        
+        }
+        else{
+            ll g=0;
+            ll s=0;
+            ll diff=cut-m;
+            for(int i=0;i<O.size();i++){
+                if(g==diff)
+                    break;
+                s+=O[i];
+                ++g;
+            }
+            ans=s;
+        }
+        cout<<ans<<"\n";
+   
+   }
+           
+           
 }
 
 
