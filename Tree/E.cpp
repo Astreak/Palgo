@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include<cmath>
 #define ll long long 
 #define tt template<typename T>
 using namespace std;
@@ -39,13 +40,7 @@ int Fenwick<T>::sum(int i){
     }
 }
 
-bool reverse_sort(vector<ll> A,int start,int end){
-    for(int i=start+1;i<=end;i++){
-        if(A[i-1]>A[i])
-            return false;
-    }
-    return true;
-}
+
 
 ll bin_exp(ll a,ll b){
     ll res=1;
@@ -58,84 +53,61 @@ ll bin_exp(ll a,ll b){
     return res;
 }
 ll prog(ll a){
-    return a*(a+1);
+    return a*(a-1);
+}
+
+ll prim_fac(ll n){
+	set<ll> S;
+	for(int i=2;i*i<=n;i++){
+	    if(n%i==0){
+		
+		while(n%i==0){
+		    S.insert(i);
+		    n/=i;
+		}
+	    }
+	}
+	if(n>1)
+	    S.insert(n);
+	return S.size();
+	
+}
+
+ll C(ll a,ll b){
+    return (a+b-1)/b;
+}
+bool is_rev(vector<ll> A){
+    for(int i=1;i<A.size();i++){
+	if(A[i-1]<=A[i])
+	    return false;
+    }
+    return true;
 }
 
 int main(){
-   int t;
-   cin>>t;
-   while(t--){
-        ll n,m;
-        cin>>n>>m;
-        string s;
-        cin>>s;
-        vector<pair<char,ll>> P;
-        for(int i=0;i<n;i++){
-            if(P.empty() || P.back().first!=s[i]){
-                P.push_back(make_pair(s[i],1));
-            }
-            else
-                P.back().second++;
-        }
-        ll cut=0;
-        ll leading=0;
-        bool flag=false;
-        vector<ll> O;
-        for(int i=0;i<P.size();i++){
-            if(P[i].first=='1'){
-                flag=true;
-                ++cut;
-            }
-            else if(P[i].first=='0')
-                O.push_back(P[i].second);
-            if(!flag)
-                ++leading;
-        }
-        reverse(P.begin(),P.end());
-        flag=false;
-        ll trail=0;
-        for(int i=0;i<P.size();i++){
-            if(P[i].first=='1'){
-                flag=true;
-                break;
-            }
-            if(!flag)
-                ++trail;
-                
-            
-        }
-        sort(O.begin(),O.end());
-        ll ans;
-        if(cut<=m){
-            if(cut<m){
-                ll diff=leading+trail+cut;
-                if(m-cut>=2)
-                    ans=0;
-                else
-                    ans=min(leading,trail);
-            }
-            else
-                ans=leading+trail;
-        
-        }
-        else{
-            ll g=0;
-            ll s=0;
-            ll diff=cut-m;
-            for(int i=0;i<O.size();i++){
-                if(g==diff)
-                    break;
-                s+=O[i];
-                ++g;
-            }
-            ans=s;
-        }
-        cout<<ans<<"\n";
-   
-   }
-           
-           
+    int t;
+    cin>>t;
+    while(t--){
+	ll p,f,cnt1,cnt2,s,w;
+	cin>>p>>f;
+	cin>>cnt1>>cnt2;
+	cin>>s>>w;
+	ll Sum=p+f;
+	ll M=INT_MIN;
+	for(int i=0;i<=cnt1;i++){
+		ll temp=i*s;
+		if(temp<=Sum){
+		    ll diff=Sum-temp;
+		    ll g=diff/w;
+		    if(g>cnt2)
+			g=cnt2;
+		    M=max(M,g+i);
+		}
+	}
+	cout<<M<<"\n";
+    }
 }
+
 
 
 

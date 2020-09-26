@@ -401,44 +401,7 @@ bool is_palin(ll n){
  
 
 int main(){
-    vector<vector<int>> A= { {1, 3, 1, 5}, 
-        {2, 2, 4, 1}, 
-        {5, 0, 2, 3}, 
-        {0, 6, 1, 2} 
-    }; 
-    int s=2;
-    int dp[4][4];
-    bool dp2[4][4];
-    memset(dp2,false,sizeof(dp));
-    dp[s][0]=A[s][0];
-    dp2[s][0]=true;
-    int c=0;
-    memset(dp,0,sizeof(dp));
-    for(int i=0;i<4;i++){
-        for(int j=0;j<4;j++){
-            if(dp[i][j])
-                continue;
-            else if(j==0 && i!=s)
-                dp[i][j]=0;
-                
-            else if((i==0 && j==0) || (i==3 && j==3))
-                dp[i][j]=A[i][j];
-            else if(i==0 && j!=0)
-                dp[i][j]=max(dp[i][j-1],dp[i+1][j-1])+A[i][j];
-            else if(i==3 && j!=0)
-                dp[i][j]=max(dp[i][j-1],dp[i-1][j-1])+A[i][j];
-            else if(j!=0){
-                dp[i][j]=max(dp[i-1][j-1],max(dp[i][j-1],dp[i+1][j-1]))+A[i][j];
-            }
-            dp2[i][j]=true;
-                
-            
-
-                
-           c=max(c,dp[i][j]);     
-        }
-    }
-    cout<<c<<"\n";
+   
     
 
 }

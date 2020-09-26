@@ -53,26 +53,10 @@ int main(){
    int t;
    cin>>t;
    while(t--){
-        double n;
-        cin>>n;
-        double ans1=-1;
-        for(double i=0;i<=n;i++){
-            double o=i/n;
-            if(i+o==i){
-                ans1=i;
-                break;
-            }
-        }
-        if(ans1<0){
-            puts("N");
-            continue;
-        }
-        else{
-            cout<<"Y"<<" ";
-            cout<<ans1<<" "<<abs(n-ans1)<<"\n";
-        }
+        ll a,b,n,m;
+        cin>>a>>b>>n>>m;
+       
         
-            
    }
 }
 
