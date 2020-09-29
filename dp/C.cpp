@@ -503,23 +503,19 @@ int main(){
     ll dp[O][2];
     for(int i=0;i<O;i++)
 	dp[i][0]=dp[i][1]=0;
-    ll bx=0;
-    ll by=P[0].second;
+    dp[0][0]=0;
+    dp[0][1]=P[0].second;
     for(int i=1;i<P.size();i++){
 	if(P[i].first==1){
-	  ll nx=by;
-	  ll ny=bx+P[i].second;
-	  bx=nx;
-	  by=ny;
+	    dp[i][0]=dp[i-1][1];
+	    dp[i][1]=dp[i-1][0]+P[i].second;
 	}
 	else{
-	    ll nx=min(bx,by);
-	    ll ny=bx+P[i].second;
-	    bx=nx;
-	    by=ny;
+	    dp[i][0]=min(dp[i-1][1],dp[i-1][0]);
+	    dp[i][1]=dp[i-1][0]+P[i].second;
 	}
     }
-   cout<<min(bx,by)<<"\n";
+   cout<<min(dp[O-1][0],dp[O-1][1])<<"\n";
 	
     
     
