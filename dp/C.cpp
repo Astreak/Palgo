@@ -14,20 +14,6 @@ typedef tree<int, null_type, less<int>, rb_tree_tag,
              
 
 
-class TestC{
-    private:
-        ll t;
-    public:
-        TestC(ll a){
-            this->t=a;    
-        }
-        void dec(){
-            --(this->t);
-        }
-        ll get_t(){
-            return this->t;
-        }
-};
 
 
 

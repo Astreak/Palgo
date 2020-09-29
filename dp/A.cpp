@@ -374,7 +374,9 @@ int edit_distance(string s,string m){
     }
     return dp[y][k];
 }
-
+ll C(ll a,ll b){
+      return (a+b-1)/b;
+  }
 bool is_prime(ll n){
     ll c=0;
     for(int i=1;i<=n;i++){
@@ -401,7 +403,33 @@ bool is_palin(ll n){
  
 
 int main(){
-   
-    
-
+   string s;
+   cin>>s;
+   ll n=s.length();
+   vector<pair<char,ll>> P;
+   for(int i=0;i<n;i++){
+      if(P.empty() || P.back().first!=s[i])
+	  P.push_back(make_pair(s[i],1));
+      else
+	P.back().second++;
+      
+    }
+    ll S=0;
+    for(int i=0;i<P.size();i++){
+	  if(P[i].first=='v')
+	      S+=(P[i].second-1);
+    }
+    ll pref=0;
+    ll ans=0;
+    for(int i=0;i<P.size();i++){
+	if(P[i].first=='v')
+	    pref+=(P[i].second-1);
+	else{
+	    ll temp1=pref;
+	    ll k=(S-pref);
+	    ll cnt=P[i].second;
+	    ans+=(cnt*temp1*k);
+	}
+    }
+    cout<<ans<<"\n";
 }
