@@ -7,23 +7,23 @@ tt
 class Fenwick{
   public:
     T n;
-    
+    Fenwick(T n){
+	this->n=n;
+    }
     vector<T> A;
-
-    void copy_array(vector<T> F){
-        for(int i=0;i<=n;i++){
-           A.push_back(0);
-        }   
+      void copy_array(vector<T> F){
+         for(int i=0;i<1000000;i++)
+	    A.push_back(0);
         for(int i=0;i<F.size();i++){
             update(n,i,F[i]);
         }
     }
-    void update(int n,int i,T val);
-    int sum(int i);
+    void update(T n,T i,T val);
+    T sum(T i);
       
 };
 tt
-void Fenwick<T>::update(int n,int i,T val){
+void Fenwick<T>::update(T n,T i,T val){
     int index=i+1;
     while(index<=n){
         A[index]+=val;
@@ -31,13 +31,14 @@ void Fenwick<T>::update(int n,int i,T val){
     }
 }
 tt
-int Fenwick<T>::sum(int i){
-    int sum=0;
-    int index=i+1;
+T Fenwick<T>::sum(T i){
+    T sum=0;
+    T index=i+1;
     while(index>0){
         sum+=A[index];
         index-=(index&(-index));
     }
+    return sum;
 }
 
 
@@ -85,27 +86,7 @@ bool is_rev(vector<ll> A){
 }
 
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-	ll p,f,cnt1,cnt2,s,w;
-	cin>>p>>f;
-	cin>>cnt1>>cnt2;
-	cin>>s>>w;
-	ll Sum=p+f;
-	ll M=INT_MIN;
-	for(int i=0;i<=cnt1;i++){
-		ll temp=i*s;
-		if(temp<=Sum){
-		    ll diff=Sum-temp;
-		    ll g=diff/w;
-		    if(g>cnt2)
-			g=cnt2;
-		    M=max(M,g+i);
-		}
-	}
-	cout<<M<<"\n";
-    }
+    
 }
 
 

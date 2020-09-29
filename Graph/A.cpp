@@ -219,59 +219,11 @@ int connected_components(G<C> g){
 
 
 int main(){
-   int t;
-   cin>>t;
-   while(t--){
-        ll n,m;
-        cin>>n>>m;
-        vector<ll> A(n);
-        for(auto& x:A)
-            cin>>x;
-        map<ll,vector<ll>>M;
-        for(int j=0;j<n;j++){
-            for(int i=0;i<m;i++){
-                ll o;
-                cin>>o;
-                M[j].push_back(A[j]+o);
-                A[j]=A[j]+o;
-            }
-        }
-        map<ll,ll> H;
-        map<ll,ll> R;
-        
-        for(auto x:M){
-            ll c=INT_MIN;
-            ll index=-1;
-            for(int i=0;i<x.second.size();i++){
-                if(c<x.second[i]){
-                    c=x.second[i];
-                    index=i;
-                }
-                
-            }
-            H[x.first]=index;
-        }
-        ll cnt=0;
-        for(auto x:M){
-            bool flag=true;
-            for(int i=0;i<m;i++){
-                for(auto n:M){
-                    if(n.first!=x.first){
-                        if(n.second[i]>x.second[i]){
-                            flag=false;
-                            break;
-                        }
-                    }
-                }
-                if(!flag)
-                    break;
-            }
-            R[x.first]=flag;
-        }
-        for(auto x:R)
-            cout<<x.first<<" "<<x.second<<"\n";
-        cout<<"\n";
-
-    }
+   vector<ll> A={3,3,2,3,4,3,3,3};
+   A.erase(A.begin()+3,A.begin()+4);
+   for(auto x:A)
+      cout<<x<<" ";
+  cout<<"\n";
+  cout<<"\n";
    
 }

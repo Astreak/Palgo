@@ -9,6 +9,19 @@ using namespace __gnu_pbds;
 using namespace std;
 typedef tree<int, null_type, less<int>, rb_tree_tag, 
              tree_order_statistics_node_update> O; 
+	     
+struct compare { 
+    bool operator()(const pair<ll, ll>& value,  
+                                const ll& key) 
+    { 
+        return (value.first < key); 
+    } 
+    bool operator()(const ll& key,  
+                    const pair<ll, ll>& value) 
+    { 
+        return (key < value.first); 
+    } 
+}; 
 TT
 class G{
     public:
@@ -22,7 +35,7 @@ class G{
     void add_edge(C a, C b);
     void bfs(C s);
     void dfs1(C v,unordered_map<C,bool>&visited);
-    void dfs(C s);
+    void dfs(C s,unordered_map<C,bool>&vis);
     bool detect_cycle_utils(C v,unordered_map<C,bool>&visited,C parent);
     bool iscycle(C a);
     bool mother(C a);
@@ -32,7 +45,8 @@ TT
 // change directive propertyu
 void G<C>::add_edge(C a,C b){
     adj[a].push_back(b);
-    adj[b].push_back(a);
+    
+    
     
 }
 TT
@@ -54,17 +68,18 @@ void G<C>::bfs(C s){
     }
 }
 TT
-void G<C>::dfs1(C v,unordered_map<C,bool>&vis){
+void G<C>::dfs1(C v,unordered_map<C,bool>&visited){
     
-    vis[v]=true;
+    visited[v]=true;
+    cout<<v<<" ";
+    cout<<"\n";
     for(auto i=adj[v].begin();i!=adj[v].end();++i){
-        if(!vis[*i])
-            dfs1(*i,vis);
+        if(!visited[*i])
+            dfs1(*i,visited);
     }
 }
 TT
-void G<C>::dfs(C s){
-    unordered_map<C,bool> vis;
+void G<C>::dfs(C s,unordered_map<C,bool>& vis){
     dfs1(s,vis);
 }
 
@@ -199,11 +214,11 @@ void flood_fill(vector<vector<T>>& A,T n,T chg){
 
 }
 TT
-int connected_components(G<C> g){
+ll connected_components(G<C> g){
     vector<C> A;
     for(auto x:g.adj)
         A.emplace_back(x.first);
-    int c=0;
+    ll  c=0;
     unordered_map<C,bool> M;
     for(C a:A){
         if(!M[a]){
@@ -310,9 +325,9 @@ int shortest_path(vector<vector<C>>A,C s,C d){
     
 }
 TT 
-int No_componenets(G<C> g,unordered_map<C,vector<C>> adj){
+ll No_componenets(G<C>g,unordered_map<C,vector<C>> adj){
         vector<C> A;
-        int cnt=0;
+        ll cnt=0;
         for(auto x:adj)
             A.emplace_back(x.first);
         unordered_map<C,bool> M(false);
@@ -324,25 +339,76 @@ int No_componenets(G<C> g,unordered_map<C,vector<C>> adj){
         }
         return cnt;
 }
+bool avg(vector<ll> A,ll h){
+    for(int i=0;i<A.size();i++){
+	ll temp=A[i]^h;
+	if(find(A.begin(),A.end(),temp)==A.end())
+	    return false;
+    }
+    return true;
+}
+
+vector<ll> prime_facs(ll n){
+      vector<ll> P;
+      for(int i=2;i*i<=n;i++){
+	  if(n%i==0){
+	    while(n%i==0){
+		if(find(P.begin(),P.end(),i)==P.end())
+		    P.emplace_back(i);
+		n/=i;
+	    }
+	    
+	}
+      }
+      if(n>1)
+	  P.push_back(n);
+      return P;
+}
+ll findSubarraySum(vector<ll> arr, ll n, ll sum) 
+{ 
+    
+    unordered_map<ll, ll> prevSum; 
+  
+    ll res = 0; 
+  
+    
+    ll currsum = 0; 
+  
+    for (int i = 0; i < n; i++) { 
+  
+        
+        currsum += arr[i]; 
+  
+        
+        if (currsum == sum) 
+            res++; 
+  
+        
+        if (prevSum.find(currsum - sum) != prevSum.end()) 
+            res += (prevSum[currsum - sum]); 
+  
+       
+        prevSum[currsum]++; 
+    } 
+  
+    return res; 
+} 
 
 int main(){
-   ll n;
-   cin>>n;
-   vector<ll> A(n);
-   for(auto& x:A)
-     cin>>x;
-   sort(A.begin(),A.end());
-   ll j=sqrt(A[n-1]);
-   cout<<ceil(j)<<"\n";
-   ll c=0;
-   for(int i=0;i<n;i++){
+   int t;
+   cin>>t;
+   while(t--){
+      
+      
     
-   }
-   
-   
-}
-       
-       
+      
+    }
+
+      
+ 
+	
+}  
+    
        
        
        
