@@ -481,6 +481,48 @@ bool prime_divisor(ll n){
 
 
 int main(){
+    string s;
+    cin>>s;
+    ll n=s.length();
+    vector<pair<ll,ll>> P;
+    vector<ll> A;
+    for(int i=0;i<n;i++){
+	if(s[i]<97)
+	  A.push_back(1);
+	else
+	  A.push_back(0);
+    }
     
+    for(int i=0;i<A.size();i++){
+	if(P.empty() || P.back().first!=A[i])
+	    P.emplace_back(make_pair(A[i],1));
+	else
+	  P.back().second++;
+    }
+    ll O=P.size();
+    ll dp[O][2];
+    for(int i=0;i<O;i++)
+	dp[i][0]=dp[i][1]=0;
+    ll bx=0;
+    ll by=P[0].second;
+    for(int i=1;i<P.size();i++){
+	if(P[i].first==1){
+	  ll nx=by;
+	  ll ny=bx+P[i].second;
+	  bx=nx;
+	  by=ny;
+	}
+	else{
+	    ll nx=min(bx,by);
+	    ll ny=bx+P[i].second;
+	    bx=nx;
+	    by=ny;
+	}
+    }
+   cout<<min(bx,by)<<"\n";
+	
+    
+    
+	    
     
 }
