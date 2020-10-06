@@ -47,10 +47,33 @@ int main(){
    int t;
    cin>>t;
    while(t--){
-      for(int i=0;i<n;i++){
-	
+     vector<ll> P;
+     ll n;
+     cin>>n;
+     vector<ll> A(n);
+     for(auto& x:A)
+	cin>>x;
+     reverse(A.begin(),A.end());
+     ll c=0;
+     ll index=-1;
+     ll start=-1;
+     for(int i=0;i+1<n;i++){
+        if(A[i]<A[i+1])
+	  index=i;
+	else{
+	    if(index!=-1){
+	      if(start==0)
+		c+=(A[end]-A[start]);
+	      P.push_back(index);
+	      
+	    }
+	    start=i;
       }
-    }
+	    
+	  
+     
+  }
+      
       
     
 }
