@@ -1,17 +1,28 @@
 #include<bits/stdc++.h>
+#include<cmath>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp> 
 #define ll long long 
 #define bits __builtin_clz
 #define tp __builtin_popcount
 #define INF 10e6;
-#define IOS ios_base::sync_with_stdio(false); cin.tie(NULL); 
 
 using namespace __gnu_pbds; 
 using namespace std;
 typedef tree<int, null_type, less<int>, rb_tree_tag, 
              tree_order_statistics_node_update> G; 
              
+
+
+
+
+
+
+
+
+
+
+
 
 struct Point{
     int x;
@@ -342,7 +353,21 @@ bool sum_of_digits(int s,int& c,int n){
 }
 
 
-
+ll bin_exp(ll a, ll b,ll &h){
+    if(b==0)
+        return 1;
+    ll res=bin_exp(a,b/2,h);
+    if(b&1){
+        ll k=(a*res*res)/10;
+        h=k%10;
+        return (a*res*res)%10;
+    }
+    else{
+        ll k=(res*res)/10;
+        h=k%10;
+        return (res*res)%10;
+    }
+}
 
 int edit_distance(string s,string m){
     int y=s.length();
@@ -365,33 +390,18 @@ int edit_distance(string s,string m){
     return dp[y][k];
 }
 
-int binary_s(vector<ll> A,ll val){
-    int low=0;
-    int high=A.size();
-    high--;
-    while(low<=high){
-        int mid=low+(high-low)/2;
-        if(A[mid]==mid)
-            return mid;
-        else if(A[mid]>val)
-            high=mid-1;
-        else
-            low=mid+1;
-    }
-    return -1;
-}
-
 bool is_prime(ll n){
     for(int i=2;i*i<=n;i++){
-        if(n%i==0)
+        if(n&i)
             return false;
     }
-    return true;    
+    return true;
 }
 
 bool is_palin(ll n){
     int r=0;
     ll res=0;
+    
     ll temp=n;
     while(n){
         r=n%10;
@@ -402,165 +412,124 @@ bool is_palin(ll n){
     return temp==res;
 }
 
-int factorial(ll n){
-    if(n==1)
-        return 1;
-    else
-        return n*factorial(n-1);
+
+
+template<class T1,class T2> 
+void S(T1& x,T2& y){
+    x^=y;
+    y^=x;
 }
 
-vector<ll> test_case(string s,ll x,ll y,ll a,ll b,unordered_map<char,ll> M){
 
-    ll u=abs(a-x)+abs(b-y);
-    vector<ll> J;
-    
-    
-    bool x_flag=false;
-    bool y_flag=false;
-    if(a>=x){
-        if(a-x<=M['R'])
-            x_flag=true;
-        else
-            x_flag=false;
-    }
-    else{
-        if(x-a<=M['L'])
-            x_flag=true;
-        else
-            x_flag==false;
-    }
-    if(b>=y){
-        if(b-y<=M['U'])
-            y_flag=true;
-        else
-            y_flag=false;
-    }
-    else{
-        if(y-b<=M['D'])
-            y_flag=true;
-        else
-            y_flag==false;
-    }
-    if(x_flag==true && y_flag==true){
-        J.push_back(1);
-        J.push_back(u);
-    }
-    else
-        J.push_back(0);
-    
-    
-
-    
-    
-    
-    return J;
+int hamming(int a,int b){
+    return __builtin_popcount(a^b);
 }
-void convert_binary(int n){
-    for(int i=31;i>=0;i--){
-        if(n&(1<<i))
-            cout<<1;
-        else
-            cout<<0;
-    }
-    cout<<"\n";
+ 
+ll fact(ll a){
+    ll ans=1;
+    for(int i=2;i<=a;i++)
+        ans=ans*i;
+    return ans;
 }
-bool collision(string s){
-    int i=0;
-    int j=s.length()-1;
-    while(i<j){
-        if(s[i]==s[j])
-            return true;
-            
-        i++;
-        j--;    
-    }
-    return false;
-}
-ll bin_exp(ll a,ll b){
-    ll res=1;
-    while(b>=1){
-        if(b&1)
-            res=res*a;
-        a=a*a;
-        b>>=1;
-    }
-    return res;
-}
-
-void ex_gcd(ll a,ll b,ll& x,ll& y){
+ll extended(ll a,ll b,ll& x,ll& y){
     if(b==0){
         x=1;
         y=0;
-        return ;    
+        return a;
     }
     ll x1,y1;
-    ex_gcd(b,a%b,x1,y1);
+    ll d=extended(b,a%b,x1,y1);
     x=y1;
     y=x1-(a/b)*y1;
-    return ;
+    return d;
 }
-vector<ll> prime_factor(ll n){
-    vector<ll> temp;
+
+
+ll fer_little(ll a,ll b,ll m){
+    if(b==0)
+        return 1;
+    ll k=fer_little(a,b/2,m)%m;
+    if(b&1)
+        return (k*k*a)%m;
+    else
+        return (k*k)%m;
+}
+ll fibon(ll n){
+    ll dp[n+1];
+    dp[1]=0;
+    dp[2]=1;
+    for(int i=3;i<=n;i++){
+        dp[i]=dp[i-1]+dp[i-2];
+    }
+    return dp[n];
+}
+bool prime_divisor(ll n){
+    set<ll> S;
     for(int i=2;i*i<=n;i++){
         while(n%i==0){
-            temp.push_back(i);
-            n=n/i;
+            S.insert(i);
+            n/=i;
             
-        }
+        }        
     }
     if(n>1)
-        temp.push_back(n);
-    return temp;
+        S.insert(n);
+    return S.size()==2;
+
 }
 
-ll LCM(ll a,ll b){
-    return (a*b)/(__gcd(a,b));
-}
-bool Prime(ll a){
-    
-    if(a<2)
-        return false;
-    if(a>2 && a%2==0)
-        return false;
-    if(a==2)
-        return true;
-    for(int i=3;i*i<=a;i+=2){
-        if(a%i==0)
-            return false;
-    }
-    return true;
-}
 
-ll good(ll a, ll&c){
-    
-    for(int i=a;i>=1;i/=2){
-        if(i&1)
-            return i;
-        ++c;
-    }
-}
-
-void sieve(ll a,unordered_map<ll,bool>&M1,unordered_map<ll,bool>&M2){
-    
-    for(int i=2;i*i<=a;i++){
-        if(M1[i]){
-            for(int j=i*i;j<=a;j+=i){
-                if(j*j<=a)
-                    M1[j]=false;
-                else
-                    M2[j]=false;
-            }
-        }
-    }
-    
-}
 
 int main(){
-    
-      
-
-
+    int t;
+    cin>>t;
+    while(t--){
+	ll n;
+	cin>>n;
+	string s;
+	
+	cin>>s;
+	vector<pair<char,ll>> P;
+	for(int i=0;i<n;i++){
+	    if(P.empty() || P.back().first!=s[i])
+		P.emplace_back(make_pair(s[i],1));
+	    else
+	      P.back().second++;
+	}
+	if(P.size()==2){
+	    if(P[0].first=='0')
+		cout<<s<<"\n";
+	    else
+	      cout<<'0'<<"\n";
+	    continue;
+	}
+	else if(P.size()<2){
+	    cout<<s<<"\n";
+	    continue;
+	}
+	
+	ll Z=0;
+	while(s[Z]=='0'){
+	    Z++;
+	}
+	
+	reverse(s.begin(),s.end());
+	ll O=0;
+	while(s[O]=='1')
+	  ++O;
+	string ans="";
+	while(Z--)
+	  ans+='0';
+	ans+='0';
+	while(O--)
+	  ans+='1';
+	cout<<ans<<"\n";
+    }
+		  
 }
 
 
-      
+
+
+
+

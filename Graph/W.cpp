@@ -15,11 +15,11 @@ class G{
     unordered_map<C,vector<C>> adj;
     unordered_map<C,vector<pair<C,int>>> wgh;
     int V;// of no use for debugging lol
-    void add_w(int a,int b,int w){
+    void add_w(C a,C b,int w){
         wgh[a].push_back(make_pair(b,w));
         wgh[b].push_back(make_pair(a,w));
     }
-    void add_edge(C a, C b);
+    void add_edge(C a, C b,int w);
     void bfs(C s);
     void dfs1(C v,unordered_map<C,bool>&visited);
     void dfs(C s);
@@ -30,8 +30,9 @@ class G{
 };
 TT
 // change directive propertyu
-void G<C>::add_edge(C a,C b){
-    adj[a].push_back(b);
+void G<C>::add_edge(C a,C b,int w){
+    wgh[a].push_back({b,w});
+    wgh[b].push_back({a,w});
     
 }
 TT
@@ -321,44 +322,32 @@ bool pattern(string s,string g){
 
 
 int main(){
-   int t;
-   cin>>t;
-   while(t--){
-        ll n;
-        cin>>n;
-        vector<ll> A(n);
-        for(auto& x:A)
-            cin>>x;
-        sort(A.rbegin(),A.rend());
-        vector<ll> B;
-        B.push_back(A[0]);
-        unordered_map<int,bool> M(false);
-        while(B.size()<n){
-            
-            int c=0;
-            int val=0;
-            int idx=-1;
-            for(int i=1;i<n;i++){
-                if(!M[i]){
-                    if(c<__gcd(A[i],B.back())){
-                        c=__gcd(A[i],B.back());
-                        val=A[i];
-                        idx=i;
-                    }
-                
-                }
-            }
-            if(idx!=-1){
-                M[idx]=true;
-                B.push_back(val);
-            } 
-        }
-        for(auto x:B)
-            cout<<x<<" ";
-        cout<<"\n";
+   int a,b,c,d;
+   cin>>a>>b>>c>>d;
+   G<char> graph;
+   graph.add_edge('X','A',1);
+   graph.add_edge('A','F',1);
+   graph.add_edge('F','L',a);
+   graph.add_edge('L','M',2);
+   graph.add_edge('M','G',1);
+   graph.add_edge('G','E',2);
+   graph.add_edge('E','X',b);
+   graph.add_edge('M','O',3);
+   graph.add_edge('M','Y',2);
+   graph.add_edge('O','Y',1);
+   graph.add_edge('Y','K',3);
+   graph.add_edge('Y','I',3);
+   graph.add_edge('I','H',c);
+   graph.add_edge('K','J',d);
+   graph.add_edge('J','H',1);
+   graph.add_edge('H','C',2);
+   graph.add_edge('H','D',2);
+   graph.add_edge('C','X',4);
+   graph.add_edge('D','B',1);
+   graph.add_edge('B','X',1);
    
-   }   
-    
+   
+       
 }
     
 

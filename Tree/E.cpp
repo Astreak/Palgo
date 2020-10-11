@@ -11,15 +11,18 @@ class Fenwick{
 	this->n=n;
     }
     vector<T> A;
+    vector<T> M;
       void copy_array(vector<T> F){
          for(int i=0;i<1000000;i++)
 	    A.push_back(0);
-        for(int i=0;i<F.size();i++){
+        for(int i=0;i<F.size();i++)
             update(n,i,F[i]);
-        }
+        
     }
     void update(T n,T i,T val);
     T sum(T i);
+    void MIN_BIT();
+    T mini(T i);
       
 };
 tt
@@ -40,7 +43,32 @@ T Fenwick<T>::sum(T i){
     }
     return sum;
 }
+tt
+void Fenwick<T>::MIN_BIT(){
+      vector<T> M=A;
+      for(int i=0;i<A.size();i++){
+	  ll temp=i;
+	  ll c=INT_MAX;
+	  while(temp<n){
+	    c=min(c,A[temp]);
+	    temp+=(temp&(-temp));
+	  }
+	  M[i]=c;
+      }
 
+
+}
+tt
+T Fenwick<T>::mini(T i){
+    T temp=INT_MAX;
+    T I=i+1;
+    while(I>0){
+	temp=min(temp,A[I]);
+	I-=(I&(I-1));
+    }
+    return temp;
+  
+}
 
 
 ll bin_exp(ll a,ll b){
@@ -86,6 +114,10 @@ bool is_rev(vector<ll> A){
 }
 
 int main(){
+    vector<ll> A={1,2,3,4,5,6,7,8};
+    Fenwick<ll> fen(A.size());
+    
+       
     
 }
 

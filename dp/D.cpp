@@ -481,6 +481,5 @@ bool prime_divisor(ll n){
 
 
 int main(){
-    
-      
+   
 }
