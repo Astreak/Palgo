@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 #include<cmath>
+#include<fstream>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp> 
 #define ll long long 
@@ -353,7 +354,21 @@ bool sum_of_digits(int s,int& c,int n){
 }
 
 
-
+ll bin_exp(ll a, ll b,ll &h){
+    if(b==0)
+        return 1;
+    ll res=bin_exp(a,b/2,h);
+    if(b&1){
+        ll k=(a*res*res)/10;
+        h=k%10;
+        return (a*res*res)%10;
+    }
+    else{
+        ll k=(res*res)/10;
+        h=k%10;
+        return (res*res)%10;
+    }
+}
 
 int edit_distance(string s,string m){
     int y=s.length();
@@ -463,58 +478,48 @@ bool prime_divisor(ll n){
     return S.size()==2;
 
 }
-ll bin_exp(ll a,ll b,ll h){
-      if(b==0)
-	  return 1;
-      ll res=bin_exp(a,b/2,h);
-      if(b%2==1)
-	  return (a*res*res)%h;
-      else
-	  return (res*res)%h;
-	  
-      
-}
+
 
 
 int main(){
-   int t;
-   cin>>t;
-   while(t--){
-     string a;
-     string b;
-     cin>>a;
-     cin>>b;
-     ll n=a.length();
-     ll m=b.length();
-     vector<pair<char,ll>> P1;
-     vector<pair<char,ll>> P2;
-     for(int i=0;i<n;i++){
-	if(P1.empty() || P1.back().first!=a[i])
-	    P1.emplace_back(make_pair(a[i],1));
+    string s;
+    cin>>s;
+    ll n=s.length();
+    vector<pair<ll,ll>> P;
+    vector<ll> A;
+    for(int i=0;i<n;i++){
+	if(s[i]<97)
+	  A.push_back(1);
 	else
-	    P1.back().second++;
-      }
-      for(int i=0;i<m;i++){
-	  if(P2.empty() || P2.back().first!=b[i])
-	      P2.emplace_back(make_pair(b[i],1));
-	  else
-	    P2.back().second++;
-	}
-      if(P1.size()!=P2.size())
-	puts("NO");
-      else{
-	  bool f=false;
-	  for(int i=0;i<P1.size();i++){
-	      if(P1[i].first!= P2[i].first || P1[i].second>P2[i].second){
-		  f=true;
-		  break;
-	      }
-	  }
-	  if(f)
-	    puts("NO");
-	  else
-	    puts("YES");
-      }
+	  A.push_back(0);
     }
-	
+    
+    for(int i=0;i<A.size();i++){
+	if(P.empty() || P.back().first!=A[i])
+	    P.emplace_back(make_pair(A[i],1));
+	else
+	  P.back().second++;
+    }
+    ll O=P.size();
+    ll dp[O][2];
+    for(int i=0;i<O;i++)
+	dp[i][0]=dp[i][1]=0;
+    dp[0][0]=0;
+    dp[0][1]=P[0].second;
+    for(int i=1;i<P.size();i++){
+	if(P[i].first==1){
+	    dp[i][0]=dp[i-1][1];
+	    dp[i][1]=dp[i-1][0]+P[i].second;
+	}
+	else{
+	    dp[i][0]=min(dp[i-1][1],dp[i-1][0]);
+	    dp[i][1]=dp[i-1][0]+P[i].second;
+	}
+    }
+   cout<<min(dp[O-1][0],dp[O-1][1])<<"\n";
+   cout<<"OK"<<"\n";
+    
+    
+	    
+    
 }
