@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include<string>
 #include<cmath>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp> 
@@ -478,55 +479,87 @@ bool prime_divisor(ll n){
 
 }
 
+ll bin_search(string s,char val){
+  ll low=0;
+  ll high=s.length();
+  while(low<=high){
+      ll mid=low+(high-low)/2;
+      if(s[mid]==val)
+	return mid;
+      else if(s[mid]>val)
+	high=mid-1;
+      else
+	low=mid+1;
+  }
+   return -1; 
+}
+
 
 
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-	ll n;
-	cin>>n;
-	string s;
-	
-	cin>>s;
-	vector<pair<char,ll>> P;
-	for(int i=0;i<n;i++){
-	    if(P.empty() || P.back().first!=s[i])
-		P.emplace_back(make_pair(s[i],1));
-	    else
-	      P.back().second++;
+      int t;
+      cin>>t;
+      while(t--){
+	  string a,b,c;
+	  cin>>a>>b>>c;
+	  ll n=a.length();
+	  ll m=b.length();
+	  bool f=true;
+	  ll dp[n+1][m+1];
+	  for(int i=0;i<=n;i++){
+	      for(int j=0;j<=m;j++)
+		dp[i][j]=0;
+	  }
+	  ll C=INT_MIN;
+	  for(int i=0;i<=n;i++){
+	      for(int j=0;j<=m;j++){
+		  if(i==0 || j==0)
+		    dp[i][j]=0;
+		  else if(a[i-1]==b[j-1])
+		    dp[i][j]=dp[i-1][j-1]+1;
+		  else
+		    dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+		
+		  C=max(C,dp[i][j]);
+	      }
+	  }
+	 if(C!=n)
+	  puts("NO");
+	 else{
+	  unordered_map<char,ll> M;
+	  unordered_map<char,ll> C;
+	   for(auto x:b)
+	     M[x]++;
+	   
+	   for(auto x:a)
+	      C[x]++;
+	    for(auto x:c)
+		C[x]++;
+	    for(auto x:M){
+		if(x.second>C[x.first]){
+		    f=false;
+		    break;
+		}
+		    
+	 }
+	 if(f)
+	  puts("YES");
+	 else
+	  puts("NO");
 	}
-	if(P.size()==2){
-	    if(P[0].first=='0')
-		cout<<s<<"\n";
-	    else
-	      cout<<'0'<<"\n";
-	    continue;
-	}
-	else if(P.size()<2){
-	    cout<<s<<"\n";
-	    continue;
-	}
-	
-	ll Z=0;
-	while(s[Z]=='0'){
-	    Z++;
-	}
-	
-	reverse(s.begin(),s.end());
-	ll O=0;
-	while(s[O]=='1')
-	  ++O;
-	string ans="";
-	while(Z--)
-	  ans+='0';
-	ans+='0';
-	while(O--)
-	  ans+='1';
-	cout<<ans<<"\n";
-    }
-		  
+      }
+	  
+    
 }
+	
+	
+      
+    
+      
+     
+    
+		  
+
 
 
 
