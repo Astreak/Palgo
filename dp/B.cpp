@@ -554,11 +554,31 @@ void sieve(ll a,unordered_map<ll,bool>&M1,unordered_map<ll,bool>&M2){
     }
     
 }
+bool check_prime(ll n){
+    for(int i=2;i*i<=n;i++){
+	if(n%i==0)
+	  return false;
+    }
+    return true;
+  
+  
+}
 
 int main(){
-    
+    int t;
+    cin>>t;
+    const ll E=9973;
+    while(t--){
+      ll n;
+      cin>>n;
+      ll A[n][n];
+      for(int i=0;i<n;i++){
+	  for(int j=0;j<n;j++){
+	      A[i][j]=0;
+	  }
+      }
       
-
+    }
 
 }
 
